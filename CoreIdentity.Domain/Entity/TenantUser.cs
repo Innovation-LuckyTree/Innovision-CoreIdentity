@@ -2,6 +2,10 @@ namespace CoreIdentity.Domain.Entity
 {
     public class TenantUser
     {
+        public Guid UserId { get; set; }
+        public Guid TenantId { get; set; }
 
+        public virtual User User { get; set; }
+        public virtual Tenant Tenant { get; set; }
     }
 }
