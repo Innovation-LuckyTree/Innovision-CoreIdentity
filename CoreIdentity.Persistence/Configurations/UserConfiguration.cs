@@ -24,9 +24,9 @@ namespace CoreIdentity.Persistence.Configurations
                 .HasMaxLength(20);
 
             builder.Property(o => o.Password)
-                .HasMaxLength(100);
+                .HasMaxLength(200);
 
-            builder.Property(o => o.PasswordHash)
+            builder.Property(o => o.PasswordSalt)
                 .HasMaxLength(100);
         }
     }
