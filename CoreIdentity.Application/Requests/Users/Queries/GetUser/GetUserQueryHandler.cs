@@ -17,8 +17,8 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
         _mapper = mapper;
     }
 
-    public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
-        => await _dbContext.Users.Where(o => o.Id == request.UserId)
-                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(cancellationToken);
+    public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken) =>
+        await _dbContext.Users.Where(o => o.Id == request.UserId)
+            .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(cancellationToken);
 }

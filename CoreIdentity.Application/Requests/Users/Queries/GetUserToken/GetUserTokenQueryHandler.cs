@@ -94,24 +94,21 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         var issuer = _appConfig.JwtConfig.Issuer;
         var audience = _appConfig.JwtConfig.Audience;
 
+        var claims = new List<Claim>();
+
         if (Guid.TryParse(tenantId, out Guid result))
         {
-            (key, issuer, audience) = await GetJwtInfoAsync(result, cancellationToken);
+            (key, issuer, audience, claims) = await GetJwtInfoAsync(result, cancellationToken);
         }
+
+        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+        claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.UserName),
-            new Claim(ClaimTypes.Sid, user.Id.ToString())
-        };
-
         foreach(var role in user.UserRoles)
-        {
             claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
-        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -127,14 +124,25 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         return tokenHandler.WriteToken(token);
     }
 
-    private async Task<(string Key, string Issuer, string Audience)> GetJwtInfoAsync(Guid tenantId, CancellationToken cancellationToken)
+    private async Task<(string Key, string Issuer, string Audience, List<Claim> Claims)> GetJwtInfoAsync(Guid tenantId, CancellationToken cancellationToken)
     {
-        var tenant = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId)).FirstOrDefaultAsync(cancellationToken);
+        var claims = new List<Claim>();
+
+        var tenant = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId))
+            .Include(o => o.TenantAudiences)
+                .ThenInclude(s => s.Audience)
+            .FirstOrDefaultAsync(cancellationToken);
 
         var key = tenant?.AppKey ?? _appConfig.JwtConfig.Key;
         var issuer = tenant?.Issuer ?? _appConfig.JwtConfig.Issuer;
-        var audience = tenant?.Audience ?? _appConfig.JwtConfig.Audience;
+        var audience = _appConfig.JwtConfig.Audience;
 
-        return (key, issuer, audience);
+        if ((tenant?.TenantAudiences?.Count ?? 0) != 0)
+        {
+            foreach(var tenantAudience in tenant.TenantAudiences)
+                claims.Add(new Claim(JwtRegisteredClaimNames.Aud, tenantAudience.Audience.Issuer));
+        }
+
+        return (key, issuer, audience, claims);
     }
 }

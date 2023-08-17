@@ -1,14 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreIdentity.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ApiController : ControllerBase
-    {
-        private IMediator _mediator;
+namespace CoreIdentity.API.Controllers;
 
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-    }
+[Route("api/[controller]")]
+[ApiController]
+public class ApiController : ControllerBase
+{
+    private IMediator _mediator;
+
+    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 }
