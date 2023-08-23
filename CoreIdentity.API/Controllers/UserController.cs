@@ -1,36 +1,109 @@
+using CoreIdentity.Application.Requests.Users.Commands;
+using CoreIdentity.Application.Requests.Users.Commands.AddUserRole;
+using CoreIdentity.Application.Requests.Users.Commands.ResetUserPassword;
 using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
+using CoreIdentity.Application.Requests.Users.Queries.UpdateUserInfo;
+using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPassword;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreIdentity.API.Controllers;
 
-public class UsersController : ApiController
+/// <summary>
+/// Users controller
+/// </summary>
+public class UsersController : ApiBaseController
 {
-    private readonly ILogger<UsersController> _logger;
-
-    public UsersController(ILogger<UsersController> logger)
-    {
-        _logger = logger;
-    }
-
+    /// <summary>
+    /// Get users
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         return Ok();
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Add([FromBody]GetUserTokenQuery loginUser, CancellationToken cancellationToken)
+    /// <summary>
+    /// Get User Token using user credentials
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("account/login")]
+    public async Task<IActionResult> Login([FromBody]GetUserTokenQuery request, CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(loginUser, cancellationToken);
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }    
+
+    /// <summary>
+    /// Create User
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody]CreateUserCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
 
         return Ok(response);
     }
 
-    [HttpPost("account/login")]
-    public async Task<IActionResult> Login([FromBody]GetUserTokenQuery loginUser, CancellationToken cancellationToken)
+    /// <summary>
+    /// Update User Information
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody]UpdateUserInfoCommand request, CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(loginUser, cancellationToken);
+        var response = await Mediator.Send(request, cancellationToken);
 
         return Ok(response);
-    }    
+    }
+
+    /// <summary>
+    /// Add Role to User
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("role")]
+    public async Task<IActionResult> AddUserRole([FromBody]AddUserRoleCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Reset User Password
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("password/reset")]
+    public async Task<IActionResult> ResetUserPassword([FromBody]ResetUserPasswordCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Update User Password
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("password")]
+    public async Task<IActionResult> UpdatePassword([FromBody]UpdateUserPasswordCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }    

@@ -12,6 +12,9 @@ namespace CoreIdentity.Persistence.Configurations
 
             builder.HasKey(o => o.UserKeyId);
 
+            builder.Property(o => o.Key)
+                .HasMaxLength(50);
+
             builder.HasOne(e => e.User)
                 .WithMany(f => f.UserKeys)
                 .HasForeignKey(e => e.UserId);

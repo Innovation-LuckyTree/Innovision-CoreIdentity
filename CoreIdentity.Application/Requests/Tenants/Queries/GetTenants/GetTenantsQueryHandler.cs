@@ -21,6 +21,7 @@ public class GetTenantsQueryHandler : IRequestHandler<GetTenantsQuery, TenantVm>
     {
         var results = await _dbContext.Tenants
             .ProjectTo<TenantDto>(_mapper.ConfigurationProvider)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         return new TenantVm(results);

@@ -4,7 +4,7 @@ namespace CoreIdentity.Domain.Entity
     {
         public int UserLogId { get; set; }
         public Guid UserId { get; set; }
-        public string TenantId { get; set; }
+        public Guid? TenantId { get; set; }
         public string IpAddress { get; set; }
         public DateTimeOffset LoginDate { get; set; } = DateTime.Now;
 

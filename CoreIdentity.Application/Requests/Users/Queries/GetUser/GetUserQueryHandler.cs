@@ -19,6 +19,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 
     public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken) =>
         await _dbContext.Users.Where(o => o.Id == request.UserId)
-            .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(cancellationToken);
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(cancellationToken);
 }

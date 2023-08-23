@@ -15,11 +15,13 @@ public class LoginUserNotificationHandler : INotificationHandler<LoginUserNotifi
 
     public async Task Handle(LoginUserNotification notification, CancellationToken cancellationToken)
     {
+        Guid.TryParse(notification.TenantId, out Guid tenantId);
+
         var userLog = new UserLog
         {
             UserId = notification.UserId,
             IpAddress = notification.IpAddress,
-            TenantId = notification.TenantId
+            TenantId = tenantId
         };
 
         _dbContext.UserLogs.Add(userLog);

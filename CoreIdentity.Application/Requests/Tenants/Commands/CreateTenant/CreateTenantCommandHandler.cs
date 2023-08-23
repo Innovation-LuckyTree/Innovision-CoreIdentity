@@ -1,18 +1,15 @@
 using CoreIdentity.Application.Common.Interfaces;
 using CoreIdentity.Domain.Entity;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace CoreIdentity.Application.Requests.Tenants.Commands.CreateTenant;
 
 public class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, Unit>
 {
-    private readonly ILogger _logger;
     private readonly ICoreIdentityDbContext _dbContext;
 
-    public CreateTenantCommandHandler(ILogger logger, ICoreIdentityDbContext dbContext)
+    public CreateTenantCommandHandler(ICoreIdentityDbContext dbContext)
     {
-        _logger = logger;
         _dbContext = dbContext;
     }
 

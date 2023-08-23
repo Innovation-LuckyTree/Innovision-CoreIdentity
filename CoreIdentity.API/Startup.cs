@@ -3,6 +3,10 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using CoreIdentity.Persistence;
 using CoreIdentity.Application;
+using CoreIdentity.API.Filters;
+using FluentValidation.AspNetCore;
+using CoreIdentity.Application.Common.Models;
+using CoreIdentity.Application.Common.Interfaces;
 
 namespace CoreIdentity.API;
 
@@ -24,11 +28,16 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        
         services.AddAuthorization();
         var logger = _loggerFactory.CreateLogger(typeof(Startup));
 
         // print all configurations here
+        var test = new AppConfig{
+            JwtConfig = new JwtConfig("", "" ,"")
+        }; 
 
+        services.AddSingleton<IAppConfig>(test);
 
         //then reset the logger after printing
         _loggerFactory = LoggerFactory.Create(builder =>
@@ -81,6 +90,10 @@ public class Startup
 
             opts.IncludeXmlComments(xmlPath);
         });
+
+        services.AddControllers(options =>
+            options.Filters.Add<ApiExceptionFilterAttribute>())
+            .AddFluentValidation();
 
         services.AddMemoryCache();
     }

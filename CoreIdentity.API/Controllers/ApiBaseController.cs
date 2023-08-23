@@ -5,7 +5,7 @@ namespace CoreIdentity.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ApiController : ControllerBase
+public class ApiBaseController : ControllerBase
 {
     private IMediator _mediator;
 

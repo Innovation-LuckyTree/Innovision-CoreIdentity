@@ -13,6 +13,7 @@ namespace CoreIdentity.Domain.Entity
         public string PasswordSalt { get; set; }
         public bool ChangePassword { get; set; } = false;
         public bool EmailConfirmed { get; set; } = true;
+        public bool MobilePrimary { get; set; } = true;
 
         public virtual ICollection<TenantUser> TenantUsers { get; set; }
         public virtual ICollection<UserKey> UserKeys { get; set; }

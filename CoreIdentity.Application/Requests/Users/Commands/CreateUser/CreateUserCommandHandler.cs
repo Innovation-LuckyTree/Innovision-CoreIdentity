@@ -45,7 +45,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
             password = tenant.DefaultPassword;
         }
 
-        var passwordHash = CreatePassword(request.Password);
+        var passwordHash = CreatePassword(password);
 
         var user = new User
         {
@@ -61,6 +61,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
             }
         };
 
-       throw new NotImplementedException();
+        _dbContext.Users.Add(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return _mapper.Map<UserDto>(user);
     }
 }

@@ -34,6 +34,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             .Include(o => o.TenantUsers)
             .Include(o => o.UserRoles)
                 .ThenInclude(e => e.Roles)
+            .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
 
         if (user == null)

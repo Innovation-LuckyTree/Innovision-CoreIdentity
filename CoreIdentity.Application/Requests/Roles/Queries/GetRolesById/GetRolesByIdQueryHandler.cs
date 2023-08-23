@@ -20,6 +20,7 @@ public class GetRolesByIdQueryHandler : IRequestHandler<GetRolesByIdQuery, Roles
     public async Task<RolesDto> Handle(GetRolesByIdQuery request, CancellationToken cancellationToken)
     {
         return await _dbContext.Roles
+            .Where(o => o.Id == request.RoleId)
             .ProjectTo<RolesDto>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
     }

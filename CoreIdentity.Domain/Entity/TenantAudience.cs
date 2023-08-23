@@ -7,7 +7,7 @@ namespace CoreIdentity.Domain.Entity
         public Guid TenantId { get; set; }
         public Guid AudienceId { get; set; }
         
-        public Tenant TenanId { get; set; }
+        // public Tenant Tenant { get; set; }
         public Tenant Audience { get; set; }
     }
 }
