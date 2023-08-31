@@ -1,11 +1,11 @@
 using AutoMapper;
-using MediatR;
+using CoreIdentity.Application.Common.Interfaces;
 
 namespace CoreIdentity.Application.Requests.Roles.Queries;
 
-public class RolesDto : IRequest<Domain.Entity.Roles>
+public class RolesDto : IMapFrom<Domain.Entity.Roles>
 {
-    public Guid RoleId { get; set; }
+    public int RoleId { get; set; }
     public string RoleName { get; set; }
 
     public void Mapping(Profile profile)

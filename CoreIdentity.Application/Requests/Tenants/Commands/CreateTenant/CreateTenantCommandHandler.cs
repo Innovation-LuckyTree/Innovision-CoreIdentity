@@ -8,7 +8,7 @@ public class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, U
 {
     private readonly ICoreIdentityDbContext _dbContext;
 
-    public CreateTenantCommandHandler(ICoreIdentityDbContext dbContext)
+    public CreateTenantCommandHandler(ICoreIdentityDbContext dbContext, IAppConfig appConfig)
     {
         _dbContext = dbContext;
     }

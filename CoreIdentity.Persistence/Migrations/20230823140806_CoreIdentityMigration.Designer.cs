@@ -144,7 +144,7 @@ namespace CoreIdentity.Persistence.Migrations
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.TenantKey", b =>
                 {
-                    b.Property<int>("TenantKeyId")
+                    b.Property<Guid>("TenantKeyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 

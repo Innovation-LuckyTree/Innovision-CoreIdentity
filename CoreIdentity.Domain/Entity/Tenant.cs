@@ -7,7 +7,7 @@ namespace CoreIdentity.Domain.Entity
         public Guid Id { get; set; }
         public string TenantName { get; set; }
         public int Type { get; set; }
-        public Guid AdminUserId { get; set; }
+        public Guid? AdminUserId { get; set; }
         public string DefaultPassword { get; set; }
         public string AppKey { get; set; }
         public string Issuer { get; set; }

@@ -1,4 +1,5 @@
 using CoreIdentity.Application.Requests.Tenants.Commands.AddAudience;
+using CoreIdentity.Application.Requests.Tenants.Commands.AddTenantKey;
 using CoreIdentity.Application.Requests.Tenants.Commands.AddUsers;
 using CoreIdentity.Application.Requests.Tenants.Commands.CreateTenant;
 using CoreIdentity.Application.Requests.Tenants.Queries.GetTenantById;
@@ -62,6 +63,20 @@ public class TenantController : ApiBaseController
     /// <returns></returns>
     [HttpPost("audience")]
     public async Task<IActionResult> AddTenantAudience(AddAudienceCommand request, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(request, cancellationToken);
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Add Tenant Key for daemon authentication
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("key")]
+    public async Task<IActionResult> AddTenantKey(AddTenantKeyCommand request, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(request, cancellationToken);
 
