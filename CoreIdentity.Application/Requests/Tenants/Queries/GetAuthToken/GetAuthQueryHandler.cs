@@ -16,6 +16,7 @@ public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantToke
 {
     private readonly ICoreIdentityDbContext _dbContext;
     private readonly IAppConfig _appConfig;
+    
 
     public GetAuthQueryHandler(ICoreIdentityDbContext dbContext, IAppConfig appConfig)
     {
@@ -25,22 +26,26 @@ public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantToke
 
     public async Task<TenantTokenDto> Handle(GetAuthTokenQuery request, CancellationToken cancellationToken)
     {
+        var test = await _dbContext.TenantKeys.Where(o => o.TenantKeyId == request.ResourceId).FirstOrDefaultAsync(cancellationToken);
+
         var tenantKey = await _dbContext.TenantKeys
             .Where(o => o.TenantKeyId == request.ResourceId)
             .Include(o => o.Tenant)
                 .ThenInclude(o => o.AdminUser)
-            .SingleOrDefaultAsync(cancellationToken);
+                    .ThenInclude(o => o.UserRoles)
+                    .ThenInclude(o => o.Roles)
+            .FirstOrDefaultAsync(cancellationToken);
 
         _ = tenantKey ?? throw new EntityNotFoundException("TenantKey", request.ResourceId);
 
-        if (!(tenantKey.TenantId == request.ClientId && tenantKey.Key == request.Key))
+        if (!(tenantKey.TenantId == request.ClientId && tenantKey.TenantId == request.ClientId))
         {
             _ = tenantKey ?? throw new Exception($"Unable to find resource for ClientId : {request.ClientId}");
         }
 
-        if (request.Key.GetPasswordHash(tenantKey.Salt) != request.Key)
+        if (request.Key.GetPasswordHash(tenantKey.Salt) != tenantKey.Key)
         {
-            return new TenantTokenDto();
+            _ = tenantKey ?? throw new Exception($"Unable to authenticate ClientId : {request.ClientId} with resourceId {request.ResourceId}");
         }
 
         var adminUser = tenantKey.Tenant.AdminUser;
@@ -66,12 +71,9 @@ public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantToke
 
     private async Task<string> GenerateToken(User user, Guid tenantId, CancellationToken cancellationToken)
     {
-        var key = _appConfig.JwtConfig.Key;
-        var issuer = _appConfig.JwtConfig.Issuer;
-        var audience = _appConfig.JwtConfig.Audience;
-
+        string? key, issuer, audience;
         var claims = new List<Claim>();
-
+        
         (key, issuer, audience, claims) = await GetJwtInfoAsync(tenantId, cancellationToken);
 
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
@@ -94,16 +96,19 @@ public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantToke
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
+
         return tokenHandler.WriteToken(token);
     }
 
     private async Task<(string Key, string Issuer, string Audience, List<Claim> Claims)> GetJwtInfoAsync(Guid tenantId, CancellationToken cancellationToken)
     {
         var claims = new List<Claim>();
+        var tenant1 = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId))
+            .Include(o => o.TenantAudiences)
+            .ToListAsync(cancellationToken);
 
         var tenant = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId))
             .Include(o => o.TenantAudiences)
-                .ThenInclude(s => s.Audience)
             .FirstOrDefaultAsync(cancellationToken);
 
         var key = tenant?.AppKey ?? _appConfig.JwtConfig.Key;
