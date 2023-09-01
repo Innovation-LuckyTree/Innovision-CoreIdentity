@@ -191,7 +191,7 @@ namespace CoreIdentity.Persistence.Migrations
                 name: "TenantKey",
                 columns: table => new
                 {
-                    TenantKeyId = table.Column<int>(type: "int", nullable: false)
+                    TenantKeyId = table.Column<int>(type: "uniqueidentifier", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),

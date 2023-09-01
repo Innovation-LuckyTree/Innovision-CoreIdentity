@@ -32,13 +32,6 @@ public class Startup
         services.AddAuthorization();
         var logger = _loggerFactory.CreateLogger(typeof(Startup));
 
-        // print all configurations here
-        var test = new AppConfig{
-            JwtConfig = new JwtConfig("", "" ,"")
-        }; 
-
-        services.AddSingleton<IAppConfig>(test);
-
         //then reset the logger after printing
         _loggerFactory = LoggerFactory.Create(builder =>
         {
@@ -46,8 +39,11 @@ public class Startup
         });
         logger = _loggerFactory.CreateLogger(typeof(Startup));
 
+        var test2 = Configuration.GetSection("Jwt");
         // Service Layers 
         string connString = Configuration.GetConnectionString("CoreIdentityDb");
+
+        services.AddConfigurations(Configuration);
         services.AddPersistenceLayer(connString);
         services.AddApplicationLayer();
 
@@ -61,11 +57,11 @@ public class Startup
             setup.ReportApiVersions = true;
         });
 
-        services.AddVersionedApiExplorer(setup =>
-        {
-            setup.GroupNameFormat = "'v'VVV";
-            setup.SubstituteApiVersionInUrl = true;
-        });
+        // services.AddVersionedApiExplorer(setup =>
+        // {
+        //     setup.GroupNameFormat = "'v'VVV";
+        //     setup.SubstituteApiVersionInUrl = true;
+        // });
 
         services.AddSwaggerGen(opts =>
         {

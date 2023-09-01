@@ -20,11 +20,14 @@ public class AddAudienceCommandHandler : IRequestHandler<AddAudienceCommand, Uni
             .SingleOrDefaultAsync(cancellationToken);
 
         _ = tenant ?? throw new Exception($"Unable to find tenant ID {request.TenantId}");
-
-        request.Audiences.ToList().ForEach(o => tenant.TenantAudiences.Add(
-            new TenantAudience {
-                AudienceId = o
-            }));
+        
+        foreach(var audience in request.Audiences)
+        {
+            tenant.TenantAudiences.Add(new TenantAudience {
+                TenantId = tenant.Id,
+                AudienceId = audience
+            });
+        }
         
         await _dbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;

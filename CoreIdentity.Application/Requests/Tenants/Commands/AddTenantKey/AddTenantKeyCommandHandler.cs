@@ -33,13 +33,12 @@ public class AddTenantKeyCommandHandler : IRequestHandler<AddTenantKeyCommand, T
         {
             TenantId = request.TenantId,
             Key = keyHash.Password,
-            Salt = keyHash.Password,
+            Salt = keyHash.Salt,
             StartDate = request.StartDate,
             ExpirationDate = request.ExpirationDate
         };
 
         _dbContext.TenantKeys.Add(tenantKey);
-
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new TenantKeyResult(tenantKey.TenantKeyId, tenant.Id, key, "Bearer");

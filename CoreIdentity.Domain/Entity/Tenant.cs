@@ -4,6 +4,14 @@ namespace CoreIdentity.Domain.Entity
 {
     public class Tenant : AuditableEntity
     {
+        public Tenant()
+        {
+            TenantAudiences = new HashSet<TenantAudience>();
+            TenantUsers = new HashSet<TenantUser>();
+            TenantKeys = new HashSet<TenantKey>();
+            UserLogs = new HashSet<UserLog>();
+        }
+
         public Guid Id { get; set; }
         public string TenantName { get; set; }
         public int Type { get; set; }
