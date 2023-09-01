@@ -131,7 +131,6 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
 
         var tenant = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId))
             .Include(o => o.TenantAudiences)
-                .ThenInclude(s => s.Audience)
             .FirstOrDefaultAsync(cancellationToken);
 
         var key = tenant?.AppKey ?? _appConfig.JwtConfig.Key;
