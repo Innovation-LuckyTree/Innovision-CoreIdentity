@@ -7,12 +7,7 @@ public static class ConfigurationServices
 {
     public static IServiceCollection AddConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtConfig = configuration.GetSection("AppConfig:Jwt").Get<JwtConfig>();
-
-        var appConfig = new AppConfig
-        {
-            JwtConfig = jwtConfig
-        };
+        var appConfig = configuration.GetSection("AppConfig").Get<AppConfig>();
 
         services.AddSingleton<IAppConfig>(appConfig);        
 

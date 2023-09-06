@@ -57,12 +57,6 @@ public class Startup
             setup.ReportApiVersions = true;
         });
 
-        // services.AddVersionedApiExplorer(setup =>
-        // {
-        //     setup.GroupNameFormat = "'v'VVV";
-        //     setup.SubstituteApiVersionInUrl = true;
-        // });
-
         services.AddSwaggerGen(opts =>
         {
             opts.SwaggerDoc("v1", new OpenApiInfo { Title = "CoreIdentity API", Version = "version 1.0" });
@@ -86,6 +80,8 @@ public class Startup
 
             opts.IncludeXmlComments(xmlPath);
         });
+
+        services.AddAuthentication();
 
         services.AddControllers(options =>
             options.Filters.Add<ApiExceptionFilterAttribute>())

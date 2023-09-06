@@ -12,13 +12,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
 
-public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
+public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
 {
     private readonly ICoreIdentityDbContext _dbContext;
     private readonly IAppConfig _appConfig;
     
 
-    public GetAuthQueryHandler(ICoreIdentityDbContext dbContext, IAppConfig appConfig)
+    public GetAuthTokenQueryHandler(ICoreIdentityDbContext dbContext, IAppConfig appConfig)
     {
         _dbContext = dbContext;
         _appConfig = appConfig;
@@ -77,7 +77,9 @@ public class GetAuthQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantToke
         (key, issuer, audience, claims) = await GetJwtInfoAsync(tenantId, cancellationToken);
 
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+        claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
+        claims.Add(new Claim("tenantId", tenantId.ToString()));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

@@ -26,7 +26,7 @@ public class AuthController : ApiBaseController
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("/tenant")]
+    [HttpPost("tenant")]
     public async Task<IActionResult> GetTenantToken([FromBody]GetAuthTokenQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);

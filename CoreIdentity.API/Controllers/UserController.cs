@@ -23,19 +23,6 @@ public class UsersController : ApiBaseController
         return Ok();
     }
 
-    /// <summary>
-    /// Get User Token using user credentials
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpPost("account/login")]
-    public async Task<IActionResult> Login([FromBody]GetUserTokenQuery request, CancellationToken cancellationToken)
-    {
-        var response = await Mediator.Send(request, cancellationToken);
-
-        return Ok(response);
-    }    
 
     /// <summary>
     /// Create User
