@@ -28,7 +28,18 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        
+        // Default Policy
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+        });
+
         services.AddAuthorization();
         var logger = _loggerFactory.CreateLogger(typeof(Startup));
 
@@ -96,6 +107,16 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        // Shows UseCors with CorsPolicyBuilder.
+        app.UseCors(builder =>
+        {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
