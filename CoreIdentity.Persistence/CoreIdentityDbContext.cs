@@ -32,5 +32,3 @@ public class CoreIdentityDbContext : DbContext, ICoreIdentityDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreIdentityDbContext).Assembly);
     }
 }
-
-

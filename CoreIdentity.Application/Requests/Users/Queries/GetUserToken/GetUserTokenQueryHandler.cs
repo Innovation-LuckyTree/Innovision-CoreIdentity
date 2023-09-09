@@ -102,8 +102,10 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             (key, issuer, audience, claims) = await GetJwtInfoAsync(result, cancellationToken);
         }
 
-        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+        claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
+        claims.Add(new Claim("tenantId", tenantId ?? ""));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

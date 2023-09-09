@@ -264,12 +264,6 @@ namespace CoreIdentity.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenant_AdminUserId",
-                table: "Tenant",
-                column: "AdminUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TenantAudience_AudienceId",
                 table: "TenantAudience",
                 column: "AudienceId");

@@ -31,8 +31,8 @@ public static class CryptographyExtensions
     }
 
     public static string CreateKey()
-        => Convert.ToBase64String(RandomNumberGenerator.GetBytes(keySize)); 
+        => Convert.ToBase64String(RandomNumberGenerator.GetBytes(keySize));
 
     public static string CreateTempPassword()
-        => Convert.ToBase64String(RandomNumberGenerator.GetBytes(8)); 
+        => Convert.ToBase64String(RandomNumberGenerator.GetBytes(8));
 }

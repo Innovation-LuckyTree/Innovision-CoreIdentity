@@ -1,6 +1,7 @@
 using CoreIdentity.Application.Common.Interfaces;
 using CoreIdentity.Domain.Entity;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace CoreIdentity.Application.Requests.Tenants.Commands.CreateTenant;
 

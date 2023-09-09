@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
 
-public class GetAuthQueryValidator : AbstractValidator<GetAuthTokenQuery>
+public class GetAuthTokenQueryValidator : AbstractValidator<GetAuthTokenQuery>
 {
-    public GetAuthQueryValidator()
+    public GetAuthTokenQueryValidator()
     {
         RuleFor(o => o.ClientId)
             .NotEmpty();
