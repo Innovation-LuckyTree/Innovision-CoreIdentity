@@ -1,3 +1,5 @@
+using CoreIdentity.Domain.Entity;
+
 namespace CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 
 public class UserTokenDto
@@ -9,4 +11,11 @@ public class UserTokenDto
     public string ClientId { get; set; }
     public string Type { get; set; }
     public long ExpirationDate { get; set; }
+    public IList<Role> Roles { get; set; }
+}
+
+public class Role
+{
+    public int Id { get; set; }
+    public string RoleName { get; set; }
 }

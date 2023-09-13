@@ -64,7 +64,12 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             ClientId = request.TenantId,
             Type = "Bearer",
             ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
-            Token = token
+            Token = token,
+            Roles = user.UserRoles.Select(m => new Role 
+            { 
+                Id = m.Roles.Id, 
+                RoleName = m.Roles.RoleName
+            }).ToList()
         };
     }
 
