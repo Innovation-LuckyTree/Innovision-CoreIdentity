@@ -1,6 +1,10 @@
+using Azure.Core;
+using CoreIdentity.Application.Common.Models;
+using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 using CoreIdentity.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static CoreIdentity.Application.Common.Extensions.CryptographyExtensions;
 
 namespace CoreIdentity.Persistence.Configurations
 {
@@ -28,6 +32,72 @@ namespace CoreIdentity.Persistence.Configurations
 
             builder.Property(o => o.PasswordSalt)
                 .HasMaxLength(100);
+
+            // Data Seeder
+            builder.HasData(new User {
+                UserName = "juanTmadAdmin",
+                Email = "juanTmadAdmin@gmail.com",
+                MobileNumber = "09090909099",
+                Password = CreatePassword("123456789").Password,
+                PasswordSalt = CreatePassword("123456789").Salt,
+                UserRoles = new[] { new UserRoles
+                    {
+                        RoleId = 1
+                    }
+                }
+            },
+            new User
+            {
+                UserName = "juanTmadOperator",
+                Email = "juanTmadOperator@gmail.com",
+                MobileNumber = "09090909099",
+                Password = CreatePassword("123456789").Password,
+                PasswordSalt = CreatePassword("123456789").Salt,
+                UserRoles = new[] { new UserRoles
+                    {
+                        RoleId = 2
+                    }
+                }
+            },
+            new User
+            {
+                UserName = "juanTmadMasterAgent",
+                Email = "juanTmadMasterAgent@gmail.com",
+                MobileNumber = "09090909099",
+                Password = CreatePassword("123456789").Password,
+                PasswordSalt = CreatePassword("123456789").Salt,
+                UserRoles = new[] { new UserRoles
+                    {
+                        RoleId = 3
+                    }
+                }
+            },
+            new User
+            {
+                UserName = "juanTmadAgent",
+                Email = "juanTmadAgent@gmail.com",
+                MobileNumber = "09090909099",
+                Password = CreatePassword("123456789").Password,
+                PasswordSalt = CreatePassword("123456789").Salt,
+                UserRoles = new[] { new UserRoles
+                    {
+                        RoleId = 4
+                    }
+                }
+            },
+            new User
+            {
+                UserName = "juanTmadPlayer",
+                Email = "juanTmadPlayer@gmail.com",
+                MobileNumber = "09090909099",
+                Password = CreatePassword("123456789").Password,
+                PasswordSalt = CreatePassword("123456789").Salt,
+                UserRoles = new[] { new UserRoles
+                    {
+                        RoleId = 5
+                    }
+                }
+            });
         }
     }
 }
