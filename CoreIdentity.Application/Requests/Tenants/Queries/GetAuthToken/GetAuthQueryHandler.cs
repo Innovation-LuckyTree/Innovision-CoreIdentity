@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
 
-public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
+public class GetAuthTokenQueryHandler    : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
 {
     private readonly ICoreIdentityDbContext _dbContext;
     private readonly IAppConfig _appConfig;

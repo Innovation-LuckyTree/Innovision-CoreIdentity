@@ -15,15 +15,19 @@ namespace CoreIdentity.Persistence.Configurations
                 .HasMaxLength(50);
 
             builder.Property(o => o.Domain)
+                .IsRequired(false)
                 .HasMaxLength(100);
 
             builder.Property(o => o.AppKey)
+                .IsRequired(false)
                 .HasMaxLength(100);
 
             builder.Property(o => o.Issuer)
+                .IsRequired(false)
                 .HasMaxLength(200);
 
-            builder.Property(e => e.CreatedOn).IsRequired();
+            builder.Property(e => e.CreatedOn)
+                .IsRequired();
 
             builder.HasOne(e => e.AdminUser)
                 .WithOne(f => f.TenantAdmin)

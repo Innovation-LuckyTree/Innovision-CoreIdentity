@@ -1,7 +1,6 @@
 using CoreIdentity.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.VisualBasic;
 
 namespace CoreIdentity.Persistence.Configurations
 {

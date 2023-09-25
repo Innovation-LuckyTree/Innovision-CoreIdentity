@@ -15,7 +15,7 @@ public class AuthController : ApiBaseController
     [HttpPost("account/login")]
     public async Task<IActionResult> Login([FromBody]GetUserTokenQuery request, CancellationToken cancellationToken)
     {
-        var response = await Mediator.Send(request, cancellationToken);
+        var response = await Mediator.Send(request, cancellationToken);.kkkkkkkkx
 
         return Ok(response);
     }
