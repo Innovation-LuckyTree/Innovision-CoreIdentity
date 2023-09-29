@@ -17,6 +17,9 @@ public class AuthController : ApiBaseController
     {
         var response = await Mediator.Send(request, cancellationToken);
 
+        if (response == null)
+            return NotFound();
+            
         return Ok(response);
     }
 

@@ -111,7 +111,10 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         foreach(var role in user.UserRoles)
-            claims.Add(new Claim(ClaimTypes.Role, $"{role.Roles.Id}|{role.Roles.RoleName}"));
+        {
+            claims.Add(new Claim("RoleId", role.Roles.Id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
+        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
