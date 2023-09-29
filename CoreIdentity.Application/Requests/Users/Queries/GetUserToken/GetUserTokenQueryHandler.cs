@@ -64,12 +64,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             ClientId = request.TenantId,
             Type = "Bearer",
             ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
-            Token = token,
-            Roles = user.UserRoles.Select(m => new Role 
-            { 
-                Id = m.Roles.Id, 
-                RoleName = m.Roles.RoleName
-            }).ToList()
+            Token = token
         };
     }
 
@@ -116,7 +111,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         foreach(var role in user.UserRoles)
-            claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
+            claims.Add(new Claim(ClaimTypes.Role, $"{role.Roles.Id}|{role.Roles.RoleName}"));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
