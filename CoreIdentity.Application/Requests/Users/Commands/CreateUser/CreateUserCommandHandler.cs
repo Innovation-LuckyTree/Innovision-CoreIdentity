@@ -58,6 +58,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
                 {
                     RoleId = role.Id
                 }
+            },
+            TenantUsers = new [] {
+                new TenantUser {
+                    TenantId = tenant.Id
+                }
             }
         };
 

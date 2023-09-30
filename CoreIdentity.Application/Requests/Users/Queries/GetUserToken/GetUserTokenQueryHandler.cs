@@ -67,7 +67,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             Token = token
         };
     }
-
+        
     private bool ValidateUser(GetUserTokenQuery request, User user)
     {
         if (string.IsNullOrEmpty(request.TenantId))
