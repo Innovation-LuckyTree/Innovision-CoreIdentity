@@ -86,10 +86,10 @@ public class Startup
                     }
             });
 
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
+            // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-            opts.IncludeXmlComments(xmlPath);
+            // opts.IncludeXmlComments(xmlPath);
         });
 
         services.AddAuthentication();
