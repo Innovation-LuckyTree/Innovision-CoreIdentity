@@ -14,6 +14,9 @@ namespace CoreIdentity.Domain.Entity
         public bool ChangePassword { get; set; } = false;
         public bool EmailConfirmed { get; set; } = true;
         public bool MobilePrimary { get; set; } = true;
+        public int Attempts { get; set; } = 0;
+        public bool Locked { get; set; } = false;
+        public DateTime? LockTime { get; set; }
 
         public virtual ICollection<TenantUser> TenantUsers { get; set; }
         public virtual ICollection<UserKey> UserKeys { get; set; }

@@ -71,31 +71,31 @@ namespace CoreIdentity.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 381, DateTimeKind.Local).AddTicks(6940),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9780),
                             RoleName = "Super Admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 381, DateTimeKind.Local).AddTicks(6943),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9784),
                             RoleName = "Operator"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 381, DateTimeKind.Local).AddTicks(6944),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9785),
                             RoleName = "Master Agent"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 381, DateTimeKind.Local).AddTicks(6945),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9786),
                             RoleName = "Agent"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 381, DateTimeKind.Local).AddTicks(6947),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9788),
                             RoleName = "Player"
                         });
                 });
@@ -107,7 +107,6 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AdminUserId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AppKey")
@@ -143,7 +142,8 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdminUserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AdminUserId] IS NOT NULL");
 
                     b.ToTable("Tenant", (string)null);
                 });
@@ -279,72 +279,72 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("064aec21-220f-448c-ada1-f76214bf64e7"),
+                            Id = new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211"),
                             ChangePassword = false,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 384, DateTimeKind.Local).AddTicks(2526),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 795, DateTimeKind.Local).AddTicks(8653),
                             Email = "juanTmadAdmin@gmail.com",
                             EmailConfirmed = true,
                             IdNumber = 0,
                             MobileNumber = "09090909099",
                             MobilePrimary = true,
-                            Password = "wje69iDpTtCH8SG63ixkE3FAgr1PKUo8eBffrl7T55DkhdIZYh2yfpY/4wnRYnAAP1K0PRfJi1gXtpmFY3BBCw==",
-                            PasswordSalt = "zAtqUUPG8Jod25qRRkW1d2P2AbRTT6GzRkx8u5Djp84=",
+                            Password = "C1WxL7oFsp8MZmFfQkA494BFN8Rt8piTjUgr/pwgONa2UxaEw9LydrzK98OZZIpLAaoqLVBwtu953/ZYvgEB8Q==",
+                            PasswordSalt = "gogGbsdUPjpbHEqPs941aXzfx+btsrrV2WQhWboDW8Q=",
                             UserName = "juanTmadAdmin"
                         },
                         new
                         {
-                            Id = new Guid("51d69e59-44db-4d02-8261-8d1627224267"),
+                            Id = new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981"),
                             ChangePassword = false,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 421, DateTimeKind.Local).AddTicks(7895),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 857, DateTimeKind.Local).AddTicks(142),
                             Email = "juanTmadOperator@gmail.com",
                             EmailConfirmed = true,
                             IdNumber = 0,
                             MobileNumber = "09090909099",
                             MobilePrimary = true,
-                            Password = "/PywDXfiKpzjxIBJ3jSczMM/gLtVord0l5e+52BD0kHS1b84M7x8a1Z06CCgUkP8Gs+w274+237ENbwKNB1m/w==",
-                            PasswordSalt = "OZBD2KgSAKnp3afxlPdnvreQuUpVaGyJnGE2e+pl90A=",
+                            Password = "EKfEnKI5PiktNFxCPTKa63jIMMidY94RuHOldDjZofy61kX0Q8qes3DoDjjt553zeAyewD0HsBFuOwihVjXprQ==",
+                            PasswordSalt = "2hMXGJ0lNNN/PRoPiZRehiZGs8uDEMXyoB/PurIrzek=",
                             UserName = "juanTmadOperator"
                         },
                         new
                         {
-                            Id = new Guid("209d9489-db14-42d9-a9f3-286602af2f4a"),
+                            Id = new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730"),
                             ChangePassword = false,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 460, DateTimeKind.Local).AddTicks(2445),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 920, DateTimeKind.Local).AddTicks(5620),
                             Email = "juanTmadMasterAgent@gmail.com",
                             EmailConfirmed = true,
                             IdNumber = 0,
                             MobileNumber = "09090909099",
                             MobilePrimary = true,
-                            Password = "Nvi5mb9CaoMag2NjilhOvV51uXqD58GQYaDQqr6zXjpDf9iCUG18GX19bJ+lBiBVQTtuoHSUeHCWrjJXJXHeqg==",
-                            PasswordSalt = "NEzIFqdwxtk3w9gzyyQvdrF0grPvXSVidtyAo8WmWSo=",
+                            Password = "PgypPGsuV6l67lxAhnxr+fMnkdf6yZZr/Ve0Kre7s3hniUTaJWE2t2WTe3dU/QuSBNRTvRIFjDf+jcJbpcJ1Jw==",
+                            PasswordSalt = "Wu9cJrgdj/vwWHcWc53NUkx9B8PI3wEikylcUC+/IGs=",
                             UserName = "juanTmadMasterAgent"
                         },
                         new
                         {
-                            Id = new Guid("3a52b95a-87b2-4159-9fd9-411b7c8b7c9e"),
+                            Id = new Guid("cac331ea-5c0b-4470-b395-cd91ced1630f"),
                             ChangePassword = false,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 497, DateTimeKind.Local).AddTicks(6874),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 980, DateTimeKind.Local).AddTicks(3995),
                             Email = "juanTmadAgent@gmail.com",
                             EmailConfirmed = true,
                             IdNumber = 0,
                             MobileNumber = "09090909099",
                             MobilePrimary = true,
-                            Password = "a5QHFrVGJnzvPOMTGsnMQprgrgAjfDXEH2oEFwk4Fw0pRDwsiw+6twnxO9WV7xWL/6NFb45/PDwQuYOiXvNubQ==",
-                            PasswordSalt = "uxmaAamlkmMUn7YlEmC/LtraPj8Xyf8eECnZaooc4zg=",
+                            Password = "sHOYA+6ZgVrEV029uqyyX8hhJ0l8jhTFVX5edKmTGc+XbmK78zBuBo28pRCaRF8TpE+7H1Kqpe2soxUsE93Mxg==",
+                            PasswordSalt = "dvy/Z3KJt0UBBcFuePaS+nadlfTHeVYJauQTkzNmydQ=",
                             UserName = "juanTmadAgent"
                         },
                         new
                         {
-                            Id = new Guid("9f9f3b89-1511-4e99-a4fb-e19699557fd1"),
+                            Id = new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3"),
                             ChangePassword = false,
-                            CreatedOn = new DateTime(2023, 9, 25, 21, 2, 19, 535, DateTimeKind.Local).AddTicks(5739),
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 16, 50, DateTimeKind.Local).AddTicks(9078),
                             Email = "juanTmadPlayer@gmail.com",
                             EmailConfirmed = true,
                             IdNumber = 0,
                             MobileNumber = "09090909099",
                             MobilePrimary = true,
-                            Password = "+qT5E47w0c2yJrGE2HXj7+aNPx1A7E+kKAL5pMC8UxuTRGdTXhQ63o8N2lkUGIO011GSjXhrS5mANYo703P+vg==",
-                            PasswordSalt = "eu8rqGO8wqjr4E/c1NsE1myy1/ll6ndg8hLZnk5K1wk=",
+                            Password = "cugUvANG3S+uniK58RfN0tuFXGhjEW2l0z9ofDj5pL+3wBWdxuYt5fMweMVb/UQS3cqoTOVobfcT0p1hRi8Kaw==",
+                            PasswordSalt = "TZA/HOXzLnITuo8EnHtkJkbPiS9zZhNojKp2qozfVJg=",
                             UserName = "juanTmadPlayer"
                         });
                 });
@@ -415,7 +415,6 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -447,17 +446,17 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("064aec21-220f-448c-ada1-f76214bf64e7"),
+                            UserId = new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211"),
                             RoleId = 1
                         },
                         new
                         {
-                            UserId = new Guid("51d69e59-44db-4d02-8261-8d1627224267"),
+                            UserId = new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981"),
                             RoleId = 2
                         },
                         new
                         {
-                            UserId = new Guid("209d9489-db14-42d9-a9f3-286602af2f4a"),
+                            UserId = new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730"),
                             RoleId = 3
                         },
                         new
@@ -467,7 +466,7 @@ namespace CoreIdentity.Persistence.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("9f9f3b89-1511-4e99-a4fb-e19699557fd1"),
+                            UserId = new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3"),
                             RoleId = 5
                         });
                 });
@@ -476,9 +475,7 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.HasOne("CoreIdentity.Domain.Entity.User", "AdminUser")
                         .WithOne("TenantAdmin")
-                        .HasForeignKey("CoreIdentity.Domain.Entity.Tenant", "AdminUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoreIdentity.Domain.Entity.Tenant", "AdminUserId");
 
                     b.Navigation("AdminUser");
                 });
@@ -558,9 +555,7 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.HasOne("CoreIdentity.Domain.Entity.Tenant", "Tenant")
                         .WithMany("UserLogs")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TenantId");
 
                     b.HasOne("CoreIdentity.Domain.Entity.User", "User")
                         .WithMany("UserLogs")

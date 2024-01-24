@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CoreIdentity.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -48,8 +50,8 @@ namespace CoreIdentity.Persistence.Migrations
                     IdNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    MobileNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    MobileNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Password = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     PasswordSalt = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ChangePassword = table.Column<bool>(type: "bit", nullable: false),
@@ -70,11 +72,11 @@ namespace CoreIdentity.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TenantName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    AdminUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AdminUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DefaultPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppKey = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Issuer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Domain = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    AppKey = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Issuer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Domain = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -85,8 +87,7 @@ namespace CoreIdentity.Persistence.Migrations
                         name: "FK_Tenant_User_AdminUserId",
                         column: x => x.AdminUserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -153,12 +154,12 @@ namespace CoreIdentity.Persistence.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    // table.ForeignKey(
+                    //     name: "FK_UserRoles_User_UserId",
+                    //     column: x => x.UserId,
+                    //     principalTable: "User",
+                    //     principalColumn: "Id",
+                    //     onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,22 +180,16 @@ namespace CoreIdentity.Persistence.Migrations
                         principalTable: "Tenant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    // table.ForeignKey(
-                    //     name: "FK_TenantAudience_Tenant_TenantId",
-                    //     column: x => x.TenantId,
-                    //     principalTable: "Tenant",
-                    //     principalColumn: "Id",
-                    //     onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TenantKey",
                 columns: table => new
                 {
-                    TenantKeyId = table.Column<int>(type: "uniqueidentifier", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenantKeyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -227,12 +222,12 @@ namespace CoreIdentity.Persistence.Migrations
                         principalTable: "Tenant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    // table.ForeignKey(
-                    //     name: "FK_TenantUser_User_UserId",
-                    //     column: x => x.UserId,
-                    //     principalTable: "User",
-                    //     principalColumn: "Id",
-                    //     onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TenantUser_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,8 +237,8 @@ namespace CoreIdentity.Persistence.Migrations
                     UserLogId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IpAddress = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IpAddress = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     LoginDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
@@ -253,15 +248,57 @@ namespace CoreIdentity.Persistence.Migrations
                         name: "FK_UserLog_Tenant_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenant",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserLog_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    // table.ForeignKey(
-                    //     name: "FK_UserLog_User_UserId",
-                    //     column: x => x.UserId,
-                    //     principalTable: "User",
-                    //     principalColumn: "Id",
-                    //     onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedOn", "LastModifiedBy", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9780), null, "Super Admin" },
+                    { 2, new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9784), null, "Operator" },
+                    { 3, new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9785), null, "Master Agent" },
+                    { 4, new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9786), null, "Agent" },
+                    { 5, new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9788), null, "Player" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "ChangePassword", "CreatedOn", "Email", "EmailConfirmed", "LastModifiedBy", "MobileNumber", "MobilePrimary", "Password", "PasswordSalt", "UserName" },
+                values: new object[,]
+                {
+                    { new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730"), false, new DateTime(2024, 1, 5, 12, 58, 15, 920, DateTimeKind.Local).AddTicks(5620), "juanTmadMasterAgent@gmail.com", true, null, "09090909099", true, "PgypPGsuV6l67lxAhnxr+fMnkdf6yZZr/Ve0Kre7s3hniUTaJWE2t2WTe3dU/QuSBNRTvRIFjDf+jcJbpcJ1Jw==", "Wu9cJrgdj/vwWHcWc53NUkx9B8PI3wEikylcUC+/IGs=", "juanTmadMasterAgent" },
+                    { new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981"), false, new DateTime(2024, 1, 5, 12, 58, 15, 857, DateTimeKind.Local).AddTicks(142), "juanTmadOperator@gmail.com", true, null, "09090909099", true, "EKfEnKI5PiktNFxCPTKa63jIMMidY94RuHOldDjZofy61kX0Q8qes3DoDjjt553zeAyewD0HsBFuOwihVjXprQ==", "2hMXGJ0lNNN/PRoPiZRehiZGs8uDEMXyoB/PurIrzek=", "juanTmadOperator" },
+                    { new Guid("cac331ea-5c0b-4470-b395-cd91ced1630f"), false, new DateTime(2024, 1, 5, 12, 58, 15, 980, DateTimeKind.Local).AddTicks(3995), "juanTmadAgent@gmail.com", true, null, "09090909099", true, "sHOYA+6ZgVrEV029uqyyX8hhJ0l8jhTFVX5edKmTGc+XbmK78zBuBo28pRCaRF8TpE+7H1Kqpe2soxUsE93Mxg==", "dvy/Z3KJt0UBBcFuePaS+nadlfTHeVYJauQTkzNmydQ=", "juanTmadAgent" },
+                    { new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211"), false, new DateTime(2024, 1, 5, 12, 58, 15, 795, DateTimeKind.Local).AddTicks(8653), "juanTmadAdmin@gmail.com", true, null, "09090909099", true, "C1WxL7oFsp8MZmFfQkA494BFN8Rt8piTjUgr/pwgONa2UxaEw9LydrzK98OZZIpLAaoqLVBwtu953/ZYvgEB8Q==", "gogGbsdUPjpbHEqPs941aXzfx+btsrrV2WQhWboDW8Q=", "juanTmadAdmin" },
+                    { new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3"), false, new DateTime(2024, 1, 5, 12, 58, 16, 50, DateTimeKind.Local).AddTicks(9078), "juanTmadPlayer@gmail.com", true, null, "09090909099", true, "cugUvANG3S+uniK58RfN0tuFXGhjEW2l0z9ofDj5pL+3wBWdxuYt5fMweMVb/UQS3cqoTOVobfcT0p1hRi8Kaw==", "TZA/HOXzLnITuo8EnHtkJkbPiS9zZhNojKp2qozfVJg=", "juanTmadPlayer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 4, new Guid("00000000-0000-0000-0000-000000000000") },
+                    { 3, new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730") },
+                    { 2, new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981") },
+                    { 1, new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211") },
+                    { 5, new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3") }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tenant_AdminUserId",
+                table: "Tenant",
+                column: "AdminUserId",
+                unique: true,
+                filter: "[AdminUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TenantAudience_AudienceId",

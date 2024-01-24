@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreIdentity.Persistence.Migrations
 {
     [DbContext(typeof(CoreIdentityDbContext))]
-    [Migration("20230831222603_update-tenant")]
-    partial class updatetenant
+    [Migration("20240105045816_CoreIdentityMigration")]
+    partial class CoreIdentityMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,38 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9780),
+                            RoleName = "Super Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9784),
+                            RoleName = "Operator"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9785),
+                            RoleName = "Master Agent"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9786),
+                            RoleName = "Agent"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 790, DateTimeKind.Local).AddTicks(9788),
+                            RoleName = "Player"
+                        });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
@@ -78,11 +110,9 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AdminUserId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AppKey")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -94,12 +124,10 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Domain")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Issuer")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -117,7 +145,8 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdminUserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AdminUserId] IS NOT NULL");
 
                     b.ToTable("Tenant", (string)null);
                 });
@@ -165,7 +194,8 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -208,7 +238,6 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -225,7 +254,6 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MobileNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -250,6 +278,78 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211"),
+                            ChangePassword = false,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 795, DateTimeKind.Local).AddTicks(8653),
+                            Email = "juanTmadAdmin@gmail.com",
+                            EmailConfirmed = true,
+                            IdNumber = 0,
+                            MobileNumber = "09090909099",
+                            MobilePrimary = true,
+                            Password = "C1WxL7oFsp8MZmFfQkA494BFN8Rt8piTjUgr/pwgONa2UxaEw9LydrzK98OZZIpLAaoqLVBwtu953/ZYvgEB8Q==",
+                            PasswordSalt = "gogGbsdUPjpbHEqPs941aXzfx+btsrrV2WQhWboDW8Q=",
+                            UserName = "juanTmadAdmin"
+                        },
+                        new
+                        {
+                            Id = new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981"),
+                            ChangePassword = false,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 857, DateTimeKind.Local).AddTicks(142),
+                            Email = "juanTmadOperator@gmail.com",
+                            EmailConfirmed = true,
+                            IdNumber = 0,
+                            MobileNumber = "09090909099",
+                            MobilePrimary = true,
+                            Password = "EKfEnKI5PiktNFxCPTKa63jIMMidY94RuHOldDjZofy61kX0Q8qes3DoDjjt553zeAyewD0HsBFuOwihVjXprQ==",
+                            PasswordSalt = "2hMXGJ0lNNN/PRoPiZRehiZGs8uDEMXyoB/PurIrzek=",
+                            UserName = "juanTmadOperator"
+                        },
+                        new
+                        {
+                            Id = new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730"),
+                            ChangePassword = false,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 920, DateTimeKind.Local).AddTicks(5620),
+                            Email = "juanTmadMasterAgent@gmail.com",
+                            EmailConfirmed = true,
+                            IdNumber = 0,
+                            MobileNumber = "09090909099",
+                            MobilePrimary = true,
+                            Password = "PgypPGsuV6l67lxAhnxr+fMnkdf6yZZr/Ve0Kre7s3hniUTaJWE2t2WTe3dU/QuSBNRTvRIFjDf+jcJbpcJ1Jw==",
+                            PasswordSalt = "Wu9cJrgdj/vwWHcWc53NUkx9B8PI3wEikylcUC+/IGs=",
+                            UserName = "juanTmadMasterAgent"
+                        },
+                        new
+                        {
+                            Id = new Guid("cac331ea-5c0b-4470-b395-cd91ced1630f"),
+                            ChangePassword = false,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 15, 980, DateTimeKind.Local).AddTicks(3995),
+                            Email = "juanTmadAgent@gmail.com",
+                            EmailConfirmed = true,
+                            IdNumber = 0,
+                            MobileNumber = "09090909099",
+                            MobilePrimary = true,
+                            Password = "sHOYA+6ZgVrEV029uqyyX8hhJ0l8jhTFVX5edKmTGc+XbmK78zBuBo28pRCaRF8TpE+7H1Kqpe2soxUsE93Mxg==",
+                            PasswordSalt = "dvy/Z3KJt0UBBcFuePaS+nadlfTHeVYJauQTkzNmydQ=",
+                            UserName = "juanTmadAgent"
+                        },
+                        new
+                        {
+                            Id = new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3"),
+                            ChangePassword = false,
+                            CreatedOn = new DateTime(2024, 1, 5, 12, 58, 16, 50, DateTimeKind.Local).AddTicks(9078),
+                            Email = "juanTmadPlayer@gmail.com",
+                            EmailConfirmed = true,
+                            IdNumber = 0,
+                            MobileNumber = "09090909099",
+                            MobilePrimary = true,
+                            Password = "cugUvANG3S+uniK58RfN0tuFXGhjEW2l0z9ofDj5pL+3wBWdxuYt5fMweMVb/UQS3cqoTOVobfcT0p1hRi8Kaw==",
+                            PasswordSalt = "TZA/HOXzLnITuo8EnHtkJkbPiS9zZhNojKp2qozfVJg=",
+                            UserName = "juanTmadPlayer"
+                        });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserClaims", b =>
@@ -311,7 +411,6 @@ namespace CoreIdentity.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserLogId"));
 
                     b.Property<string>("IpAddress")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -319,7 +418,6 @@ namespace CoreIdentity.Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("TenantId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -347,15 +445,40 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("daa70a93-4e90-4fbf-8fa7-c546a323e211"),
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = new Guid("779c7ed3-9859-4ba3-98e5-33532d7a5981"),
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = new Guid("09fc56a2-362d-43ca-9ff7-54eaa945e730"),
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            UserId = new Guid("ec7e38e0-68b2-4daa-b746-25656b18f9e3"),
+                            RoleId = 5
+                        });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
                 {
                     b.HasOne("CoreIdentity.Domain.Entity.User", "AdminUser")
                         .WithOne("TenantAdmin")
-                        .HasForeignKey("CoreIdentity.Domain.Entity.Tenant", "AdminUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoreIdentity.Domain.Entity.Tenant", "AdminUserId");
 
                     b.Navigation("AdminUser");
                 });
@@ -435,9 +558,7 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.HasOne("CoreIdentity.Domain.Entity.Tenant", "Tenant")
                         .WithMany("UserLogs")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TenantId");
 
                     b.HasOne("CoreIdentity.Domain.Entity.User", "User")
                         .WithMany("UserLogs")

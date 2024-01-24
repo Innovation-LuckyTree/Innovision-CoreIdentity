@@ -9,6 +9,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using CoreIdentity.Application.Notifications.LoginUser;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 
@@ -42,7 +43,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             return null;
         }
 
-        if (!ValidateUser(request, user))
+        if (!await ValidateUser(request, user))
         {
             return null;
         }
@@ -68,7 +69,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         };
     }
         
-    private bool ValidateUser(GetUserTokenQuery request, User user)
+    private async Task<bool> ValidateUser(GetUserTokenQuery request, User user)
     {
         if (string.IsNullOrEmpty(request.TenantId))
         {
@@ -83,6 +84,8 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
 
         if (request.Password.GetPasswordHash(user.PasswordSalt) != user.Password)
         {
+            await _mediator.Publish(new LoginAttemptNotification(user.Id, user.Attempts));
+
             return false;
         }
 
