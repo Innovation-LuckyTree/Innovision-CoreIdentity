@@ -65,7 +65,8 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             ClientId = request.TenantId,
             Type = "Bearer",
             ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
-            Token = token
+            Token = token,
+            TemporaryPassword = user.ChangePassword
         };
     }
         

@@ -1,5 +1,3 @@
-using CoreIdentity.Domain.Entity;
-
 namespace CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 
 public class UserTokenDto
@@ -10,5 +8,6 @@ public class UserTokenDto
     public string Token { get; set; }
     public string ClientId { get; set; }
     public string Type { get; set; }
+    public bool TemporaryPassword { get; set; }
     public long ExpirationDate { get; set; }
 }
