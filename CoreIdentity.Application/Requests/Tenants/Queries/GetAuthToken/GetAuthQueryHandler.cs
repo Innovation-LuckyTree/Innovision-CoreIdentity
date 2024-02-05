@@ -12,11 +12,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
 
-public class GetAuthTokenQueryHandler    : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
+public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, TenantTokenDto>
 {
     private readonly ICoreIdentityDbContext _dbContext;
     private readonly IAppConfig _appConfig;
-    
+
 
     public GetAuthTokenQueryHandler(ICoreIdentityDbContext dbContext, IAppConfig appConfig)
     {
@@ -73,7 +73,7 @@ public class GetAuthTokenQueryHandler    : IRequestHandler<GetAuthTokenQuery, Te
     {
         string? key, issuer, audience;
         var claims = new List<Claim>();
-        
+
         (key, issuer, audience, claims) = await GetJwtInfoAsync(tenantId, cancellationToken);
 
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
@@ -84,7 +84,7 @@ public class GetAuthTokenQueryHandler    : IRequestHandler<GetAuthTokenQuery, Te
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        foreach(var role in user.UserRoles)
+        foreach (var role in user.UserRoles)
             claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -119,7 +119,7 @@ public class GetAuthTokenQueryHandler    : IRequestHandler<GetAuthTokenQuery, Te
 
         if ((tenant?.TenantAudiences?.Count ?? 0) != 0)
         {
-            foreach(var tenantAudience in tenant.TenantAudiences)
+            foreach (var tenantAudience in tenant.TenantAudiences)
                 claims.Add(new Claim(JwtRegisteredClaimNames.Aud, tenantAudience.Audience.Issuer));
         }
 

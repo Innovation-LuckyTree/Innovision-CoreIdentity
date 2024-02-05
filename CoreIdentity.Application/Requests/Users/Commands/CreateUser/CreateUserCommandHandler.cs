@@ -25,6 +25,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
 
     public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        var isTempPassword = false;
+
         var tenant = await _dbContext.Tenants.Where(o => o.Id == request.TenantId)
             .SingleOrDefaultAsync(cancellationToken);
 
@@ -45,6 +47,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
         if (string.IsNullOrWhiteSpace(password))
         {
             password = tenant.DefaultPassword;
+            isTempPassword = true;
         }
 
         var passwordHash = CreatePassword(password);
@@ -56,6 +59,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
             MobileNumber = request.MobileNumber,
             Password = passwordHash.Password,
             PasswordSalt = passwordHash.Salt,
+            ChangePassword = isTempPassword,
             UserRoles = new[] { new UserRoles
                 {
                     RoleId = role.Id

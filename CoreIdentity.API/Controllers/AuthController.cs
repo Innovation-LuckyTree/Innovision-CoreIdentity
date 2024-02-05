@@ -6,6 +6,9 @@ namespace CoreIdentity.API.Controllers;
 
 public class AuthController : ApiBaseController
 {
+
+    ///TODO: Add Auth set up that will allow the user to login using token
+
     /// <summary>
     /// Get User Token using user credentials
     /// </summary>
