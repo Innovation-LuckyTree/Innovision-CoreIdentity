@@ -25,11 +25,17 @@ namespace CoreIdentity.Persistence.Configurations
                 .IsRequired(false)
                 .HasMaxLength(20);
 
+            builder.Property(o => o.LockTime)
+                .IsRequired(false);
+
+            builder.Property(o => o.CompanyId)
+                .IsRequired(false);
+
             builder.Property(o => o.Password)
-                .HasMaxLength(200);
+                    .HasMaxLength(200);
 
             builder.Property(o => o.PasswordSalt)
-                .HasMaxLength(100);
+                    .HasMaxLength(100);
 
             // Data Seeder
             builder.HasData(DataSeeder.GetUserList());

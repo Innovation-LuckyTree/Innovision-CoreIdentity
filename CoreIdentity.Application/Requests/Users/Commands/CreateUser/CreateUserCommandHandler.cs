@@ -60,6 +60,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
             Password = passwordHash.Password,
             PasswordSalt = passwordHash.Salt,
             ChangePassword = isTempPassword,
+            CompanyId = request.CompanyId,
             UserRoles = new[] { new UserRoles
                 {
                     RoleId = role.Id

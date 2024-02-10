@@ -79,7 +79,8 @@ public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, Tenan
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
         claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
-        claims.Add(new Claim("tenantId", tenantId.ToString()));
+        claims.Add(new Claim("tenantId", tenantId.ToString() ?? ""));
+        claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
