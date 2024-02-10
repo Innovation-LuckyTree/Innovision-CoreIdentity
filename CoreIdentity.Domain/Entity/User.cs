@@ -17,7 +17,7 @@ namespace CoreIdentity.Domain.Entity
         public int Attempts { get; set; } = 0;
         public bool Locked { get; set; } = false;
         public DateTime? LockTime { get; set; }
-        public Guid? CompanyId { get; set;}
+        public string CompanyId { get; set;}
 
         public virtual ICollection<TenantUser> TenantUsers { get; set; }
         public virtual ICollection<UserKey> UserKeys { get; set; }
