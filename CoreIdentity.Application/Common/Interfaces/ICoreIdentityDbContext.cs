@@ -15,6 +15,7 @@ public interface ICoreIdentityDbContext
     DbSet<UserKey> UserKeys { get; set; }
     DbSet<UserLog> UserLogs { get; set; }
     DbSet<UserRoles> UserRoles { get; set; }
+    DbSet<UserDeviceToken> UserDeviceTokens { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken canellationToken = default);
 }

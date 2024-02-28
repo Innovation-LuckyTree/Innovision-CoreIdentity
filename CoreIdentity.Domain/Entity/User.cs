@@ -25,5 +25,6 @@ namespace CoreIdentity.Domain.Entity
         public virtual ICollection<UserClaims> UserClaims { get; set; }
         public virtual ICollection<UserLog> UserLogs { get; set; }
         public virtual Tenant TenantAdmin { get; set; }
+        public virtual ICollection<UserDeviceToken> UserDeviceTokens { get; set; }
     }
 }

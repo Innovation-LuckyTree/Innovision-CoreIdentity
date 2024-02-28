@@ -24,6 +24,7 @@ public class CoreIdentityDbContext : DbContext, ICoreIdentityDbContext
     public virtual DbSet<UserKey> UserKeys { get; set; }
     public virtual DbSet<UserLog> UserLogs { get; set; }
     public virtual DbSet<UserRoles> UserRoles { get; set; }
+    public virtual DbSet<UserDeviceToken> UserDeviceTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

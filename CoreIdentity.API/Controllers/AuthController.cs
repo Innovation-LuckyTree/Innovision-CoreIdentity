@@ -1,4 +1,5 @@
 using CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
+using CoreIdentity.Application.Requests.UserDevices.Queries.GetAuthDeviceToken;
 using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,20 @@ public class AuthController : ApiBaseController
     /// <returns></returns>
     [HttpPost("tenant")]
     public async Task<IActionResult> GetTenantToken([FromBody]GetAuthTokenQuery request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Login using device token
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("device")]
+    public async Task<IActionResult> GetUserDeviceToken([FromBody]GetAuthDeviceTokenQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
