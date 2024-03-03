@@ -2,7 +2,7 @@ using MediatR;
 
 namespace CoreIdentity.Application.Requests.UserDevices.Commands.GetUserDeviceToken;
 
-public class CreateUserDeviceTokenCommand : IRequest<GetUserDeviceTokenDto>
+public class CreateUserDeviceTokenCommand : IRequest<UserDeviceTokenDto>
 {
     public Guid UserId { get; set; }
     public string DeviceName { get; set; }

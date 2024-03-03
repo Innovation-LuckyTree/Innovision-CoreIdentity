@@ -7,7 +7,7 @@ using static CoreIdentity.Application.Common.Extensions.CryptographyExtensions;
 
 namespace CoreIdentity.Application.Requests.UserDevices.Commands.GetUserDeviceToken;
 
-public class CreateUserDeviceTokenCommandHandler : IRequestHandler<CreateUserDeviceTokenCommand, GetUserDeviceTokenDto>
+public class CreateUserDeviceTokenCommandHandler : IRequestHandler<CreateUserDeviceTokenCommand, UserDeviceTokenDto>
 {
     public readonly ICoreIdentityDbContext _coreIdentityDbContext;
 
@@ -16,7 +16,7 @@ public class CreateUserDeviceTokenCommandHandler : IRequestHandler<CreateUserDev
         _coreIdentityDbContext = coreIdentityDbContext;
     }
 
-    public async Task<GetUserDeviceTokenDto> Handle(CreateUserDeviceTokenCommand request, CancellationToken cancellationToken)
+    public async Task<UserDeviceTokenDto> Handle(CreateUserDeviceTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await _coreIdentityDbContext.Users.Where(o => o.Id == request.UserId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -25,7 +25,7 @@ public class CreateUserDeviceTokenCommandHandler : IRequestHandler<CreateUserDev
 
         var key = CreateKey();
         var keyHash = CreatePassword(key);
-        
+
         var userDeviceToken = new UserDeviceToken
         {
             UserId = user.Id,
@@ -41,7 +41,7 @@ public class CreateUserDeviceTokenCommandHandler : IRequestHandler<CreateUserDev
 
         await _coreIdentityDbContext.SaveChangesAsync(cancellationToken);
 
-        return new GetUserDeviceTokenDto
+        return new UserDeviceTokenDto
         {
             DeviceTokenId = userDeviceToken.UserDeviceTokenId,
             Key = key,

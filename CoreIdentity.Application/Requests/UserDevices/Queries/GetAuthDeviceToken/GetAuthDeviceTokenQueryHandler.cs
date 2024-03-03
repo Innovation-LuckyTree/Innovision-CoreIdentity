@@ -47,12 +47,14 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
         return new DeviceTokenDto
         {
             Id = userDeviceToken.User.Id,
+            IdNumber = userDeviceToken.User.IdNumber,
             UserName = userDeviceToken.User.UserName,
             ClientId = request.TenantId,
             Type = "Bearer",
             ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
             Token = token,
-            TemporaryPassword = userDeviceToken.User.ChangePassword
+            TemporaryPassword = userDeviceToken.User.ChangePassword,
+            CompanyId = userDeviceToken.User.CompanyId
         };
     }
 

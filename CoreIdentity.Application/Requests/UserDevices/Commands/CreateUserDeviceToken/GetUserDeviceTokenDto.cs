@@ -1,6 +1,6 @@
 namespace CoreIdentity.Application.Requests.UserDevices.Commands.GetUserDeviceToken;
 
-public class GetUserDeviceTokenDto
+public class UserDeviceTokenDto
 {
     public Guid DeviceTokenId { get; set; }
     public string Key { get; set; }

@@ -9,5 +9,6 @@ public class DeviceTokenDto
     public string ClientId { get; set; }
     public string Type { get; set; }
     public bool TemporaryPassword { get; set; }
+    public string CompanyId { get; set; }
     public long ExpirationDate { get; set; }
 }
