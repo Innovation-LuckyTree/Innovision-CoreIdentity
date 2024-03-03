@@ -4,6 +4,7 @@ using System.Text;
 using CoreIdentity.Application.Common.Exceptions;
 using CoreIdentity.Application.Common.Extensions;
 using CoreIdentity.Application.Common.Interfaces;
+using CoreIdentity.Application.Notifications.LoginUser;
 using CoreIdentity.Domain.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,8 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
 
         var token = await GenerateToken(userDeviceToken.User, request.TenantId, cancellationToken);
 
+        await _mediator.Publish(new LoginUserNotification(userDeviceToken.User.Id, request.TenantId, request.IpAddress));
+        
         return new DeviceTokenDto
         {
             Id = userDeviceToken.User.Id,
@@ -48,7 +51,8 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
             ClientId = request.TenantId,
             Type = "Bearer",
             ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
-            Token = token
+            Token = token,
+            TemporaryPassword = userDeviceToken.User.ChangePassword
         };
     }
 
