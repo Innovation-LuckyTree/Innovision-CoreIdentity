@@ -6,6 +6,7 @@ using CoreIdentity.Application.Requests.Users.Queries.Getusers;
 using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserInfo;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPassword;
+using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPasswordById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreIdentity.API.Controllers;
