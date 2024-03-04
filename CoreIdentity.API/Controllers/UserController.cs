@@ -1,9 +1,7 @@
-using CoreIdentity.Application.Requests.Roles.Queries.GetRoles;
 using CoreIdentity.Application.Requests.Users.Commands;
 using CoreIdentity.Application.Requests.Users.Commands.AddUserRole;
 using CoreIdentity.Application.Requests.Users.Commands.ResetUserPassword;
 using CoreIdentity.Application.Requests.Users.Queries.Getusers;
-using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserInfo;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPassword;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPasswordById;
