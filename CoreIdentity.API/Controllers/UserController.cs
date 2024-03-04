@@ -96,4 +96,18 @@ public class UsersController : ApiBaseController
 
         return Ok(response);
     }
+
+    /// <summary>
+    /// Update User Password but should be pass thru OTP process
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("password/update")]
+    public async Task<IActionResult> UpdateUserPassword([FromBody]UpdateUserPasswordByIdCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }    
