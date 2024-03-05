@@ -70,7 +70,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             CompanyId = user.CompanyId
         };
     }
-        
+
     private async Task<bool> ValidateUser(GetUserTokenQuery request, User user)
     {
         if (string.IsNullOrEmpty(request.TenantId))
@@ -111,12 +111,12 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
         claims.Add(new Claim("tenantId", tenantId ?? ""));
-        claims.Add(new Claim("companyId", user.CompanyId ?? ""));
+        claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        foreach(var role in user.UserRoles)
+        foreach (var role in user.UserRoles)
         {
             claims.Add(new Claim("RoleId", role.Roles.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
@@ -150,7 +150,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
 
         if ((tenant?.TenantAudiences?.Count ?? 0) != 0)
         {
-            foreach(var tenantAudience in tenant.TenantAudiences)
+            foreach (var tenantAudience in tenant.TenantAudiences)
                 claims.Add(new Claim(JwtRegisteredClaimNames.Aud, tenantAudience.Audience.Issuer));
         }
 

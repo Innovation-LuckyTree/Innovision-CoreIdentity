@@ -19,13 +19,13 @@ public class AddUsersCommandHandler : IRequestHandler<AddUsersCommand, Unit>
     {
         var tenant = await _dbContext.Tenants.Where(o => o.Id == request.TenantId)
             .FirstOrDefaultAsync(cancellationToken);
-        
+
         _ = tenant ?? throw new Exception($"Unable to find tenant with tenantId : {request.TenantId}");
 
         var users = await _dbContext.Users.Where(o => request.UserIds.Contains(o.Id))
             .ToListAsync(cancellationToken);
 
-        if ((users?.Count ?? 0) == 0 )
+        if ((users?.Count ?? 0) == 0)
         {
             throw new Exception($"Unable to find user/s with userIds : {string.Join(",", request.UserIds)}");
         }
