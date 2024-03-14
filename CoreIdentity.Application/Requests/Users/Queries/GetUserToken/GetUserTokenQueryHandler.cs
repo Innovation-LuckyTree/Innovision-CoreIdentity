@@ -110,7 +110,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
         claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
-        claims.A`d(new Claim("tenantId", tenantId ?? ""));
+        claims.Add(new Claim("tenantId", tenantId ?? ""));
         claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
         claims.Add(new Claim("sliding", "sliding"));
 
