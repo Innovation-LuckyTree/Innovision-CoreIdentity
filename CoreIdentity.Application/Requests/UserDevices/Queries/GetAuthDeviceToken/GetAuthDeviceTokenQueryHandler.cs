@@ -76,6 +76,7 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
         claims.Add(new Claim("tenantId", tenantId ?? ""));
         claims.Add(new Claim("companyId", user.CompanyId?.ToString()?? ""));
+        claims.Add(new Claim("sliding", "sliding"));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
