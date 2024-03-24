@@ -66,31 +66,6 @@ namespace CoreIdentity.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenant",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TenantName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    AdminUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DefaultPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppKey = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Issuer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Domain = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tenant", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tenant_User_AdminUserId",
-                        column: x => x.AdminUserId,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserClaims",
                 columns: table => new
                 {

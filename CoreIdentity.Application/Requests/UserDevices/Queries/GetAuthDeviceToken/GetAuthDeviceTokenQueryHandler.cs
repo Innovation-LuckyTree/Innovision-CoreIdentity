@@ -51,7 +51,7 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
             UserName = userDeviceToken.User.UserName,
             ClientId = request.TenantId,
             Type = "Bearer",
-            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
+            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddHours(2)).ToUnixTimeSeconds(),
             Token = token,
             TemporaryPassword = userDeviceToken.User.ChangePassword,
             CompanyId = userDeviceToken.User.CompanyId

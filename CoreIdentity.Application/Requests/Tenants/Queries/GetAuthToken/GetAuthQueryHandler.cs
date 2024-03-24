@@ -63,7 +63,7 @@ public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, Tenan
             UserName = user.UserName,
             ClientId = request.ClientId.ToString(),
             Type = "Bearer",
-            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
+            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddHours(2)).ToUnixTimeSeconds(),
             Token = token
         };
     }

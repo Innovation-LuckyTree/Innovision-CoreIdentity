@@ -16,7 +16,7 @@ namespace CoreIdentity.Persistence.Configurations
 
             builder.Property(o => o.IpAddress)
                 .IsRequired(false)
-                .HasMaxLength(20);
+                .HasMaxLength(50);
 
             builder.HasOne(o => o.User)
                 .WithMany(e => e.UserLogs)

@@ -42,7 +42,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         {
             return null;
         }
-
+     
         if (!await ValidateUser(request, user))
         {
             return null;
@@ -64,7 +64,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             UserName = user.UserName,
             ClientId = request.TenantId,
             Type = "Bearer",
-            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30)).ToUnixTimeSeconds(),
+            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddHours(2)).ToUnixTimeSeconds(),
             Token = token,
             TemporaryPassword = user.ChangePassword,
             CompanyId = user.CompanyId
@@ -115,7 +115,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
         claims.Add(new Claim("user_id", user.Id.ToString()));
         claims.Add(new Claim("jti", Guid.NewGuid().ToString()));
-    
+
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
