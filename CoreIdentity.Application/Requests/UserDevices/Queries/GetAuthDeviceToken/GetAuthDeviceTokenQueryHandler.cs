@@ -33,6 +33,8 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
         var userDeviceToken = await _coreIdentityDbContext.UserDeviceTokens
             .Where(o => o.UserDeviceTokenId == request.TokenId && o.UserId == request.UserId)
             .Include(o => o.User)
+                .ThenInclude(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Roles)
             .FirstOrDefaultAsync(cancellationToken);
 
         _ = userDeviceToken ?? throw new EntityNotFoundException("UserDeviceToken", request.TokenId);
