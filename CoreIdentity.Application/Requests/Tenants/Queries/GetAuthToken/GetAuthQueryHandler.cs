@@ -79,9 +79,9 @@ public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, Tenan
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
         claims.Add(new Claim(ClaimTypes.Name, user.UserName));
         claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
-        claims.Add(new Claim("tenantId", tenantId.ToString() ?? ""));
-        claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
+        claims.Add(new Claim("tenantId", tenantId.ToString().ToUpper() ?? ""));
         claims.Add(new Claim("token_type", "access"));
+        claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
         claims.Add(new Claim("user_id", user.Id.ToString()));
         claims.Add(new Claim("jti", Guid.NewGuid().ToString()));
 
@@ -89,12 +89,15 @@ public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, Tenan
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         foreach (var role in user.UserRoles)
+        {
+            claims.Add(new Claim("RoleId", role.Roles.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
+        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(30),
+            Expires = DateTime.UtcNow.AddHours(2),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = credentials
@@ -102,7 +105,6 @@ public class GetAuthTokenQueryHandler : IRequestHandler<GetAuthTokenQuery, Tenan
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-
         return tokenHandler.WriteToken(token);
     }
 

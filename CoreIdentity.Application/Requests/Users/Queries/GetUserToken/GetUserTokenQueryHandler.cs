@@ -9,7 +9,6 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using CoreIdentity.Application.Notifications.LoginUser;
-using System.Diagnostics.CodeAnalysis;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 
@@ -128,7 +127,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(30),
+            Expires = DateTime.UtcNow.AddHours(2),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = credentials
