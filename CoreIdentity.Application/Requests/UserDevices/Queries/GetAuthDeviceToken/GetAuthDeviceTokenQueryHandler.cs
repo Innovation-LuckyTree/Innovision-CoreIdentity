@@ -94,7 +94,7 @@ public class GetAuthDeviceTokenQueryHandler : IRequestHandler<GetAuthDeviceToken
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(30),
+            Expires = DateTime.UtcNow.AddHours(2),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = credentials

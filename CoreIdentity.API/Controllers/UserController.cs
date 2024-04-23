@@ -25,11 +25,10 @@ public class UsersController : ApiBaseController
         return Ok(result);
     }
 
-
     /// <summary>
     /// Create User
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="request"></param>  
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut]
