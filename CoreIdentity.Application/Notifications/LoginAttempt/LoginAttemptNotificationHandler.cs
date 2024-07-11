@@ -27,12 +27,13 @@ public class LoginAttemptNotificationHandler : INotificationHandler<LoginAttempt
         if (attempts >= _maxAttempts)
         {
             user.Locked = true;
-            user.LockTime = DateTime.Now;    
+            user.LockTime = DateTime.Now;
         }
 
         user.Attempts = attempts;
 
         _dbContext.Users.Update(user);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

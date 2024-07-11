@@ -1,5 +1,6 @@
 using CoreIdentity.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoreIdentity.Persistence.Configurations
@@ -13,6 +14,9 @@ namespace CoreIdentity.Persistence.Configurations
 
             builder.Property(o => o.IdNumber)
                 .UseIdentityColumn();
+
+            builder.Property(p => p.IdNumber)
+                .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             builder.Property(o => o.UserName)
                 .HasMaxLength(50);

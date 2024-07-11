@@ -46,7 +46,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             return;
         }
 
-        HandleUnknownException(context);
+        HandleCustomException(context);
     }
 
     private bool IsCustomException(Type type) => !type.FullName.StartsWith("System.");

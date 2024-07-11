@@ -1,6 +1,7 @@
 using CoreIdentity.Application.Requests.Tenants.Queries.GetAuthToken;
 using CoreIdentity.Application.Requests.UserDevices.Queries.GetAuthDeviceToken;
 using CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
+using CoreIdentity.Application.Requests.Users.Queries.GetRefreshToken;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreIdentity.API.Controllers;
@@ -17,13 +18,13 @@ public class AuthController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("account/login")]
-    public async Task<IActionResult> Login([FromBody]GetUserTokenQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] GetUserTokenQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
         if (response == null)
             return NotFound();
-            
+
         return Ok(response);
     }
 
@@ -34,7 +35,7 @@ public class AuthController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("tenant")]
-    public async Task<IActionResult> GetTenantToken([FromBody]GetAuthTokenQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetTenantToken([FromBody] GetAuthTokenQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -48,9 +49,20 @@ public class AuthController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("device")]
-    public async Task<IActionResult> GetUserDeviceToken([FromBody]GetAuthDeviceTokenQuery request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserDeviceToken([FromBody] GetAuthDeviceTokenQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPost("token/refresh")]
+    public async Task<IActionResult> RefreshUserToken([FromBody] GetRefreshTokenQuery request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        if (response == null)
+            return NotFound();
 
         return Ok(response);
     }

@@ -7,6 +7,8 @@ namespace CoreIdentity.Domain.Entity
         public Guid? TenantId { get; set; }
         public string IpAddress { get; set; }
         public DateTimeOffset LoginDate { get; set; } = DateTime.Now;
+        public string RefreshToken { get; set; }
+        public DateTime ExpiryTime { get; set; }
 
         public User User { get; set; }
         public Tenant Tenant { get; set; }

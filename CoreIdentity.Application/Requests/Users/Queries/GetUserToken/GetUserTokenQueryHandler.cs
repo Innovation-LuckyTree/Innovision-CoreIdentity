@@ -4,11 +4,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using CoreIdentity.Application.Common.Extensions;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using CoreIdentity.Application.Notifications.LoginUser;
+using CoreIdentity.Application.Requests.Users.Queries.CreateUserJwtToken;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.GetUserToken;
 
@@ -18,6 +15,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
     private readonly ICoreIdentityDbContext _dbContext;
     private readonly IAppConfig _appConfig;
     private readonly IMediator _mediator;
+    private readonly DateTime _expiryDateTime;
 
     public GetUserTokenQueryHandler(ILogger<GetUserTokenQueryHandler> logger, ICoreIdentityDbContext dbContext,
         IAppConfig appConfig, IMediator mediator)
@@ -26,6 +24,7 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         _dbContext = dbContext;
         _appConfig = appConfig;
         _mediator = mediator;
+        _expiryDateTime = DateTime.UtcNow.AddHours(_appConfig.TokenExpiryHours);
     }
 
     public async Task<UserTokenDto> Handle(GetUserTokenQuery request, CancellationToken cancellationToken)
@@ -41,33 +40,18 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         {
             return null;
         }
-     
+
         if (!await ValidateUser(request, user))
         {
             return null;
         }
 
-        await _mediator.Publish(new LoginUserNotification(user.Id, request.TenantId, request.IpAddress));
+        var refreshToken = CryptographyExtensions.CreateKey();
+        var refreshTokenExpiration = _expiryDateTime.AddMinutes(30).ToUniversalTime();
 
-        return await CreateUserToken(user, request, cancellationToken);
-    }
+        await _mediator.Publish(new LoginUserNotification(user.Id, refreshToken, refreshTokenExpiration, request.TenantId, request.IpAddress), cancellationToken);
 
-    private async Task<UserTokenDto> CreateUserToken(User user, GetUserTokenQuery request, CancellationToken cancellationToken)
-    {
-        var token = await GenerateToken(user, request.TenantId, cancellationToken);
-
-        return new UserTokenDto
-        {
-            Id = user.Id,
-            IdNumber = user.IdNumber,
-            UserName = user.UserName,
-            ClientId = request.TenantId,
-            Type = "Bearer",
-            ExpirationDate = new DateTimeOffset(DateTime.UtcNow.AddHours(2)).ToUnixTimeSeconds(),
-            Token = token,
-            TemporaryPassword = user.ChangePassword,
-            CompanyId = user.CompanyId
-        };
+        return await _mediator.Send(new CreateUserJwtTokenQuery(user, request.TenantId, refreshToken), cancellationToken);
     }
 
     private async Task<bool> ValidateUser(GetUserTokenQuery request, User user)
@@ -91,71 +75,5 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
         }
 
         return true;
-    }
-
-    private async Task<string> GenerateToken(User user, string tenantId, CancellationToken cancellationToken)
-    {
-        var key = _appConfig.JwtConfig.Key;
-        var issuer = _appConfig.JwtConfig.Issuer;
-        var audience = _appConfig.JwtConfig.Audience;
-
-        var claims = new List<Claim>();
-
-        if (Guid.TryParse(tenantId, out Guid result))
-        {
-            (key, issuer, audience, claims) = await GetJwtInfoAsync(result, cancellationToken);
-        }
-
-        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-        claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-        claims.Add(new Claim(ClaimTypes.Sid, user.Id.ToString()));
-        claims.Add(new Claim("tenantId", tenantId.ToString() ?? ""));
-        claims.Add(new Claim("token_type", "access"));
-        claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
-        claims.Add(new Claim("user_id", user.Id.ToString()));
-        claims.Add(new Claim("jti", Guid.NewGuid().ToString()));
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        foreach (var role in user.UserRoles)
-        {
-            claims.Add(new Claim("RoleId", role.Roles.Id.ToString()));
-            claims.Add(new Claim(ClaimTypes.Role, role.Roles.RoleName));
-        }
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(2),
-            Issuer = issuer,
-            Audience = audience,
-            SigningCredentials = credentials
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
-
-    private async Task<(string Key, string Issuer, string Audience, List<Claim> Claims)> GetJwtInfoAsync(Guid tenantId, CancellationToken cancellationToken)
-    {
-        var claims = new List<Claim>();
-
-        var tenant = await _dbContext.Tenants.Where(o => o.Id.Equals(tenantId))
-            .Include(o => o.TenantAudiences)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        var key = tenant?.AppKey ?? _appConfig.JwtConfig.Key;
-        var issuer = tenant?.Issuer ?? _appConfig.JwtConfig.Issuer;
-        var audience = _appConfig.JwtConfig.Audience;
-
-        if ((tenant?.TenantAudiences?.Count ?? 0) != 0)
-        {
-            foreach (var tenantAudience in tenant.TenantAudiences)
-                claims.Add(new Claim(JwtRegisteredClaimNames.Aud, tenantAudience.Audience.Issuer));
-        }
-
-        return (key, issuer, audience, claims);
     }
 }
