@@ -15,7 +15,11 @@ public class LoginUserNotificationHandler(ICoreIdentityDbContext dbContext) : IN
 
         var user = await _dbContext.Users.FirstOrDefaultAsync(o => o.Id == notification.UserId, cancellationToken);
 
-        user.Attempts = 0;
+        if (user.Attempts > 0)
+        {
+            user.Attempts = 0;
+            _dbContext.Users.Update(user);
+        }
 
         var userLog = new UserLog
         {
@@ -27,7 +31,6 @@ public class LoginUserNotificationHandler(ICoreIdentityDbContext dbContext) : IN
         };
 
         _dbContext.UserLogs.Add(userLog);
-        _dbContext.Users.Add(user);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
