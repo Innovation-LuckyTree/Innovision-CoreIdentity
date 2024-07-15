@@ -1,6 +1,7 @@
 using CoreIdentity.Application.Common.Interfaces;
 using CoreIdentity.Domain.Entity;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreIdentity.Application.Notifications.LoginUser;
 
@@ -12,6 +13,10 @@ public class LoginUserNotificationHandler(ICoreIdentityDbContext dbContext) : IN
     {
         _ = Guid.TryParse(notification.TenantId, out Guid tenantId);
 
+        var user = await _dbContext.Users.FirstOrDefaultAsync(o => o.Id == notification.UserId, cancellationToken);
+
+        user.Attempts = 0;
+
         var userLog = new UserLog
         {
             UserId = notification.UserId,
@@ -22,6 +27,8 @@ public class LoginUserNotificationHandler(ICoreIdentityDbContext dbContext) : IN
         };
 
         _dbContext.UserLogs.Add(userLog);
+        _dbContext.Users.Add(user);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

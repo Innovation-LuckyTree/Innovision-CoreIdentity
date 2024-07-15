@@ -4,6 +4,7 @@ namespace CoreIdentity.Application.Common.Interfaces;
 
 public interface IAppConfig
 {
-    public int TokenExpiryHours { get; set; }
-    public JwtConfig JwtConfig { get; set; }
+    int TokenExpiryHours { get; set; }
+    int LockTimeMinutes { get; set; }
+    JwtConfig JwtConfig { get; set; }
 }

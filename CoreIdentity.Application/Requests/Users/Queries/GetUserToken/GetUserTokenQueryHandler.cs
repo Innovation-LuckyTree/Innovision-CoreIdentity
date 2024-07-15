@@ -41,6 +41,19 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
             return null;
         }
 
+        if (user.Locked)
+        {
+            var stillLocked = user.LockTime.Value.AddMinutes(_appConfig.LockTimeMinutes) > DateTime.Now;
+
+            if (stillLocked)
+            {
+                return new UserTokenDto
+                {
+                    IsLocked = true
+                };
+            }            
+        }
+
         if (!await ValidateUser(request, user))
         {
             return null;

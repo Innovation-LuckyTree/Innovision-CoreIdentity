@@ -11,5 +11,6 @@ public class UserTokenDto
     public string Type { get; set; }
     public bool TemporaryPassword { get; set; }
     public long ExpirationDate { get; set; }
+    public bool IsLocked { get; set; }
     public Guid? CompanyId { get; set; }
 }
