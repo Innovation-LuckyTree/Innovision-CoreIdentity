@@ -1,6 +1,7 @@
 using CoreIdentity.Application.Requests.Users.Commands;
 using CoreIdentity.Application.Requests.Users.Commands.AddUserRole;
 using CoreIdentity.Application.Requests.Users.Commands.ResetUserPassword;
+using CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers;
 using CoreIdentity.Application.Requests.Users.Queries.Getusers;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserInfo;
 using CoreIdentity.Application.Requests.Users.Queries.UpdateUserPassword;
@@ -103,6 +104,20 @@ public class UsersController : ApiBaseController
     /// <returns></returns>
     [HttpPost("password/update")]
     public async Task<IActionResult> UpdateUserPassword([FromBody]UpdateUserPasswordByIdCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Get locked users
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("locked/list")]
+    public async Task<IActionResult> GetLockedUsers([FromQuery] GetLockedUsersQuery request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
