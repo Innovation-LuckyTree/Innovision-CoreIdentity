@@ -117,10 +117,6 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-        else
-        {
-            app.UseHttpsRedirection();
-        }
 
         app.UseSwagger(options => options.RouteTemplate = "swagger/{documentName}/swagger.json");
         app.UseSwaggerUI();

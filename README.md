@@ -1,4 +1,6 @@
 
+
+
 PROD
-docker build -t registry.gitlab.com/happyplay/happy-play/prod-happy-play-identity:v1.2 .
+docker build -t registry.gitlab.com/happyplay/happy-play/prod-happy-play-identity:v1.26 .
 
