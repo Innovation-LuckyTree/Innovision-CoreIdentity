@@ -41,8 +41,8 @@ namespace CoreIdentity.Persistence.Configurations
             builder.Property(o => o.PasswordSalt)
                     .HasMaxLength(100);
 
-            // Data Seeder
-            builder.HasData(DataSeeder.GetUserList());
+            // // Data Seeder
+            // builder.HasData(DataSeeder.GetUserList());
         }
     }
 }

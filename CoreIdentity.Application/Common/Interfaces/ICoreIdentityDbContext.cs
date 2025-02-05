@@ -1,5 +1,6 @@
 using CoreIdentity.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace CoreIdentity.Application.Common.Interfaces;
 
@@ -16,6 +17,7 @@ public interface ICoreIdentityDbContext
     DbSet<UserLog> UserLogs { get; set; }
     DbSet<UserRoles> UserRoles { get; set; }
     DbSet<UserDeviceToken> UserDeviceTokens { get; set; }
-
+    DatabaseFacade Database { get; }
+    
     Task<int> SaveChangesAsync(CancellationToken canellationToken = default);
 }

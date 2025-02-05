@@ -70,37 +70,6 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.ToTable("Roles", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 222, DateTimeKind.Local).AddTicks(1003),
-                            RoleName = "Super Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 222, DateTimeKind.Local).AddTicks(1006),
-                            RoleName = "Operator"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 222, DateTimeKind.Local).AddTicks(1007),
-                            RoleName = "Master Agent"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 222, DateTimeKind.Local).AddTicks(1008),
-                            RoleName = "Agent"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 222, DateTimeKind.Local).AddTicks(1010),
-                            RoleName = "Player"
-                        });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
@@ -291,87 +260,87 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.ToTable("User", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("2d1a9749-68f5-4456-8159-91923982cbf2"),
-                            Attempts = 0,
-                            ChangePassword = false,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 224, DateTimeKind.Local).AddTicks(8606),
-                            Email = "juanTmadAdmin@gmail.com",
-                            EmailConfirmed = true,
-                            IdNumber = 0,
-                            Locked = false,
-                            MobileNumber = "09090909099",
-                            MobilePrimary = true,
-                            Password = "g56nlg9W+OCojktyQkDlIdc5bY3UpDDqm1ZAP51C/t4l04sYOJy/FPJBEQXp1+AdUxNP04BkToSvFherxjZ5kQ==",
-                            PasswordSalt = "+hKj+3ir1jImWNXn9oIrOarxzw1E2FWB7AGza3Ipfwk=",
-                            UserName = "juanTmadAdmin"
-                        },
-                        new
-                        {
-                            Id = new Guid("07a1fd0a-2bc6-40ea-91c1-d2ea8be67e93"),
-                            Attempts = 0,
-                            ChangePassword = false,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 274, DateTimeKind.Local).AddTicks(9371),
-                            Email = "juanTmadOperator@gmail.com",
-                            EmailConfirmed = true,
-                            IdNumber = 0,
-                            Locked = false,
-                            MobileNumber = "09090909099",
-                            MobilePrimary = true,
-                            Password = "vnmYtkwXWErjNOmtRrPN1zAFNneYV5tytl35N0LExUCGl34CEWJT0wnMJtct9oEdR+MQq6Bni59H0alhvdVaJA==",
-                            PasswordSalt = "GjIim7qBrjgZMjymiIbV4uN1umclK1jn74rgeyaI3M4=",
-                            UserName = "juanTmadOperator"
-                        },
-                        new
-                        {
-                            Id = new Guid("63c06053-6c0b-4084-a452-4d4fa96877d9"),
-                            Attempts = 0,
-                            ChangePassword = false,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 325, DateTimeKind.Local).AddTicks(3973),
-                            Email = "juanTmadMasterAgent@gmail.com",
-                            EmailConfirmed = true,
-                            IdNumber = 0,
-                            Locked = false,
-                            MobileNumber = "09090909099",
-                            MobilePrimary = true,
-                            Password = "pyCKX1UcKZ54pufoMQc2CWJ7TZKB6glp7mUbIA/rdVKcPzTVGIws1JGbNnPxWp27hJ4j1ZQ7bJj82HLF8n45cg==",
-                            PasswordSalt = "P/N/yaQp+WJrwb1uUV8Cn5dFK/eSEwtI/aWXC4hPdbA=",
-                            UserName = "juanTmadMasterAgent"
-                        },
-                        new
-                        {
-                            Id = new Guid("741dc48b-5d25-4bf2-8abf-e11b1ceab34b"),
-                            Attempts = 0,
-                            ChangePassword = false,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 394, DateTimeKind.Local).AddTicks(3591),
-                            Email = "juanTmadAgent@gmail.com",
-                            EmailConfirmed = true,
-                            IdNumber = 0,
-                            Locked = false,
-                            MobileNumber = "09090909099",
-                            MobilePrimary = true,
-                            Password = "yudtaQJU1ja2Qiu2MRhKLfZGw4eem3e4/u9fjtcnCZ6fwUyLdfUvWisFFPK15ZCIxUgTbihNrpovGUiHKgJXvA==",
-                            PasswordSalt = "+3jjxLIF4ZFDhPtz2ydu6YShkVMiw+3VaS2ZHg1nE0s=",
-                            UserName = "juanTmadAgent"
-                        },
-                        new
-                        {
-                            Id = new Guid("4d8f1852-0d9e-4b0f-a26f-cff660b32311"),
-                            Attempts = 0,
-                            ChangePassword = false,
-                            CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 456, DateTimeKind.Local).AddTicks(7064),
-                            Email = "juanTmadPlayer@gmail.com",
-                            EmailConfirmed = true,
-                            IdNumber = 0,
-                            Locked = false,
-                            MobileNumber = "09090909099",
-                            MobilePrimary = true,
-                            Password = "L3Yp4H/jYccdlxvUA2BG/IL6LVMd1CJhW2pYSasLICFQB3NHyZMqPkPAy381d4RaRTNwDfJlUZu3GNTDVDbPOg==",
-                            PasswordSalt = "fMMYhijxbxmuhzXyK/ffn4Wxg4Z2o8SU0Wt0aXLv1SQ=",
-                            UserName = "juanTmadPlayer"
-                        });
+                    // b.HasData(
+                    //     new
+                    //     {
+                    //         Id = new Guid("2d1a9749-68f5-4456-8159-91923982cbf2"),
+                    //         Attempts = 0,
+                    //         ChangePassword = false,
+                    //         CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 224, DateTimeKind.Local).AddTicks(8606),
+                    //         Email = "juanTmadAdmin@gmail.com",
+                    //         EmailConfirmed = true,
+                    //         IdNumber = 0,
+                    //         Locked = false,
+                    //         MobileNumber = "09090909099",
+                    //         MobilePrimary = true,
+                    //         Password = "g56nlg9W+OCojktyQkDlIdc5bY3UpDDqm1ZAP51C/t4l04sYOJy/FPJBEQXp1+AdUxNP04BkToSvFherxjZ5kQ==",
+                    //         PasswordSalt = "+hKj+3ir1jImWNXn9oIrOarxzw1E2FWB7AGza3Ipfwk=",
+                    //         UserName = "juanTmadAdmin"
+                    //     },
+                    //     new
+                    //     {
+                    //         Id = new Guid("07a1fd0a-2bc6-40ea-91c1-d2ea8be67e93"),
+                    //         Attempts = 0,
+                    //         ChangePassword = false,
+                    //         CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 274, DateTimeKind.Local).AddTicks(9371),
+                    //         Email = "juanTmadOperator@gmail.com",
+                    //         EmailConfirmed = true,
+                    //         IdNumber = 0,
+                    //         Locked = false,
+                    //         MobileNumber = "09090909099",
+                    //         MobilePrimary = true,
+                    //         Password = "vnmYtkwXWErjNOmtRrPN1zAFNneYV5tytl35N0LExUCGl34CEWJT0wnMJtct9oEdR+MQq6Bni59H0alhvdVaJA==",
+                    //         PasswordSalt = "GjIim7qBrjgZMjymiIbV4uN1umclK1jn74rgeyaI3M4=",
+                    //         UserName = "juanTmadOperator"
+                    //     },
+                    //     new
+                    //     {
+                    //         Id = new Guid("63c06053-6c0b-4084-a452-4d4fa96877d9"),
+                    //         Attempts = 0,
+                    //         ChangePassword = false,
+                    //         CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 325, DateTimeKind.Local).AddTicks(3973),
+                    //         Email = "juanTmadMasterAgent@gmail.com",
+                    //         EmailConfirmed = true,
+                    //         IdNumber = 0,
+                    //         Locked = false,
+                    //         MobileNumber = "09090909099",
+                    //         MobilePrimary = true,
+                    //         Password = "pyCKX1UcKZ54pufoMQc2CWJ7TZKB6glp7mUbIA/rdVKcPzTVGIws1JGbNnPxWp27hJ4j1ZQ7bJj82HLF8n45cg==",
+                    //         PasswordSalt = "P/N/yaQp+WJrwb1uUV8Cn5dFK/eSEwtI/aWXC4hPdbA=",
+                    //         UserName = "juanTmadMasterAgent"
+                    //     },
+                    //     new
+                    //     {
+                    //         Id = new Guid("741dc48b-5d25-4bf2-8abf-e11b1ceab34b"),
+                    //         Attempts = 0,
+                    //         ChangePassword = false,
+                    //         CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 394, DateTimeKind.Local).AddTicks(3591),
+                    //         Email = "juanTmadAgent@gmail.com",
+                    //         EmailConfirmed = true,
+                    //         IdNumber = 0,
+                    //         Locked = false,
+                    //         MobileNumber = "09090909099",
+                    //         MobilePrimary = true,
+                    //         Password = "yudtaQJU1ja2Qiu2MRhKLfZGw4eem3e4/u9fjtcnCZ6fwUyLdfUvWisFFPK15ZCIxUgTbihNrpovGUiHKgJXvA==",
+                    //         PasswordSalt = "+3jjxLIF4ZFDhPtz2ydu6YShkVMiw+3VaS2ZHg1nE0s=",
+                    //         UserName = "juanTmadAgent"
+                    //     },
+                    //     new
+                    //     {
+                    //         Id = new Guid("4d8f1852-0d9e-4b0f-a26f-cff660b32311"),
+                    //         Attempts = 0,
+                    //         ChangePassword = false,
+                    //         CreatedOn = new DateTime(2024, 7, 9, 12, 36, 12, 456, DateTimeKind.Local).AddTicks(7064),
+                    //         Email = "juanTmadPlayer@gmail.com",
+                    //         EmailConfirmed = true,
+                    //         IdNumber = 0,
+                    //         Locked = false,
+                    //         MobileNumber = "09090909099",
+                    //         MobilePrimary = true,
+                    //         Password = "L3Yp4H/jYccdlxvUA2BG/IL6LVMd1CJhW2pYSasLICFQB3NHyZMqPkPAy381d4RaRTNwDfJlUZu3GNTDVDbPOg==",
+                    //         PasswordSalt = "fMMYhijxbxmuhzXyK/ffn4Wxg4Z2o8SU0Wt0aXLv1SQ=",
+                    //         UserName = "juanTmadPlayer"
+                    //     });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserClaims", b =>
@@ -521,32 +490,32 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.ToTable("UserRoles", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("2d1a9749-68f5-4456-8159-91923982cbf2"),
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            UserId = new Guid("07a1fd0a-2bc6-40ea-91c1-d2ea8be67e93"),
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            UserId = new Guid("63c06053-6c0b-4084-a452-4d4fa96877d9"),
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            UserId = new Guid("00000000-0000-0000-0000-000000000000"),
-                            RoleId = 4
-                        },
-                        new
-                        {
-                            UserId = new Guid("4d8f1852-0d9e-4b0f-a26f-cff660b32311"),
-                            RoleId = 5
-                        });
+                    // b.HasData(
+                    //     new
+                    //     {
+                    //         UserId = new Guid("2d1a9749-68f5-4456-8159-91923982cbf2"),
+                    //         RoleId = 1
+                    //     },
+                    //     new
+                    //     {
+                    //         UserId = new Guid("07a1fd0a-2bc6-40ea-91c1-d2ea8be67e93"),
+                    //         RoleId = 2
+                    //     },
+                    //     new
+                    //     {
+                    //         UserId = new Guid("63c06053-6c0b-4084-a452-4d4fa96877d9"),
+                    //         RoleId = 3
+                    //     },
+                    //     new
+                    //     {
+                    //         UserId = new Guid("00000000-0000-0000-0000-000000000000"),
+                    //         RoleId = 4
+                    //     },
+                    //     new
+                    //     {
+                    //         UserId = new Guid("4d8f1852-0d9e-4b0f-a26f-cff660b32311"),
+                    //         RoleId = 5
+                    //     });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
