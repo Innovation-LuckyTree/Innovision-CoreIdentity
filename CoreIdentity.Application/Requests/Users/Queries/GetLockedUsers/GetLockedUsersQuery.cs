@@ -23,7 +23,8 @@ namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
             if (request.PageNumber > 1)
                 query = query.Skip((request.PageNumber - 1) * request.PageSize);
 
-            query = query.Take(request.PageSize);
+            if (request.PageSize > 0)
+                query = query.Take(request.PageSize);
 
             var userslist = await query
                     .ProjectTo<LockedUserDto>(_mapper.ConfigurationProvider)
