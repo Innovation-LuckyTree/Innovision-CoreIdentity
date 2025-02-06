@@ -16,14 +16,14 @@ namespace CoreIdentity.Persistence.Configurations
 
             builder.Property(e => e.CreatedOn).IsRequired();
 
-            // Data seeder
-            builder.HasData(
-                new Roles { Id=1, RoleName = "Super Admin", CreatedOn = DateTime.Now }, // 1
-                new Roles { Id=2, RoleName = "Operator", CreatedOn = DateTime.Now }, // 2
-                new Roles { Id=3, RoleName = "Master Agent", CreatedOn = DateTime.Now }, // 3
-                new Roles { Id=4, RoleName = "Agent", CreatedOn = DateTime.Now }, // 4
-                new Roles { Id=5, RoleName = "Player", CreatedOn = DateTime.Now } // 5
-            );
+            // // Data seeder
+            // builder.HasData(
+            //     new Roles { Id=1, RoleName = "Super Admin", CreatedOn = DateTime.Now }, // 1
+            //     new Roles { Id=2, RoleName = "Operator", CreatedOn = DateTime.Now }, // 2
+            //     new Roles { Id=3, RoleName = "Master Agent", CreatedOn = DateTime.Now }, // 3
+            //     new Roles { Id=4, RoleName = "Agent", CreatedOn = DateTime.Now }, // 4
+            //     new Roles { Id=5, RoleName = "Player", CreatedOn = DateTime.Now } // 5
+            // );
         }
     }
 }
