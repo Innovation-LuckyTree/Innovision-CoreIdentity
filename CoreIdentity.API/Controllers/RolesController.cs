@@ -43,8 +43,8 @@ public class RolesController : ApiBaseController
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPut]
-    public async Task<IActionResult> Put([FromBody] CreateRoleCommand request, CancellationToken cancellationToken)
+    [HttpPost]
+    public async Task<IActionResult> CreateRole([FromBody] CreateRoleCommand request, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(request, cancellationToken);
         return Ok(result);
