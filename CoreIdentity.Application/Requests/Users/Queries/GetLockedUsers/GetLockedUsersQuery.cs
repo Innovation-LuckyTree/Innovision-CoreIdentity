@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
 {
-    public record GetLockedUsersQuery(Guid CompanyObjectId, int PageNumber, int PageSize) : IRequest<LockedUserVm>;
+    public record GetLockedUsersQuery(Guid CompanyObjectId, int? PageNumber = null, int? PageSize = null) : IRequest<LockedUserVm>;
     public class GetLockedUsersQueryHandler(ICoreIdentityDbContext dbContext, IMapper mapper) : IRequestHandler<GetLockedUsersQuery, LockedUserVm>
     {
         private readonly ICoreIdentityDbContext _dbContext = dbContext;
@@ -34,8 +34,8 @@ namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
             {
                 Results = userslist,
                 Total = total,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize
+                PageNumber = request.PageNumber ?? 1,
+                PageSize = request.PageSize ?? total
             };
         }
     }
