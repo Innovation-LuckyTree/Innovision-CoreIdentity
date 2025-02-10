@@ -20,10 +20,15 @@ namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
 
             var total = await query.CountAsync();
 
-            if (request.PageNumber.HasValue && request.PageSize.HasValue)
+            if (request.PageNumber.HasValue)
             {
-                query = query.Skip((request.PageNumber.Value - 1) * request.PageSize.Value)
-                              .Take(request.PageSize.Value);
+                int pageNumber = request.PageNumber.Value;
+                query = query.Skip(pageNumber * (request.PageSize ?? query.Count()));
+            }
+
+            if (request.PageSize.HasValue)
+            {
+                query = query.Take(request.PageSize.Value);
             }
 
             var userslist = await query
