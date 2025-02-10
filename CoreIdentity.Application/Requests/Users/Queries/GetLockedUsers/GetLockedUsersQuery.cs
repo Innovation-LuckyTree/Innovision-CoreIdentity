@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
 {
-    public record GetLockedUsersQuery(Guid CompanyObjectId, int PageNumber, int PageSize) : IRequest<LockedUserVm>;
+    public record GetLockedUsersQuery(Guid CompanyObjectId, int? PageNumber = null, int? PageSize = null) : IRequest<LockedUserVm>;
     public class GetLockedUsersQueryHandler(ICoreIdentityDbContext dbContext, IMapper mapper) : IRequestHandler<GetLockedUsersQuery, LockedUserVm>
     {
         private readonly ICoreIdentityDbContext _dbContext = dbContext;
@@ -20,10 +20,16 @@ namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
 
             var total = await query.CountAsync();
 
-            if (request.PageNumber > 1)
-                query = query.Skip((request.PageNumber - 1) * request.PageSize);
+            if (request.PageNumber.HasValue)
+            {
+                int pageNumber = request.PageNumber.Value;
+                query = query.Skip(pageNumber * (request.PageSize ?? query.Count()));
+            }
 
-            query = query.Take(request.PageSize);
+            if (request.PageSize.HasValue)
+            {
+                query = query.Take(request.PageSize.Value);
+            }
 
             var userslist = await query
                     .ProjectTo<LockedUserDto>(_mapper.ConfigurationProvider)
@@ -33,8 +39,8 @@ namespace CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers
             {
                 Results = userslist,
                 Total = total,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize
+                PageNumber = request.PageNumber ?? 1,
+                PageSize = request.PageSize ?? total
             };
         }
     }
