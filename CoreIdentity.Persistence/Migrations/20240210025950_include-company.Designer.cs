@@ -70,37 +70,6 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.ToTable("Roles", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedOn = new DateTime(2024, 2, 10, 10, 59, 49, 798, DateTimeKind.Local).AddTicks(3362),
-                            RoleName = "Super Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedOn = new DateTime(2024, 2, 10, 10, 59, 49, 798, DateTimeKind.Local).AddTicks(3365),
-                            RoleName = "Operator"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedOn = new DateTime(2024, 2, 10, 10, 59, 49, 798, DateTimeKind.Local).AddTicks(3367),
-                            RoleName = "Master Agent"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedOn = new DateTime(2024, 2, 10, 10, 59, 49, 798, DateTimeKind.Local).AddTicks(3368),
-                            RoleName = "Agent"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedOn = new DateTime(2024, 2, 10, 10, 59, 49, 798, DateTimeKind.Local).AddTicks(3369),
-                            RoleName = "Player"
-                        });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>

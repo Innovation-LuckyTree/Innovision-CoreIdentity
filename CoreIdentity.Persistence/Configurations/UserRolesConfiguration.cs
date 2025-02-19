@@ -19,7 +19,7 @@ namespace CoreIdentity.Persistence.Configurations
                 .WithMany(f => f.UserRoles)
                 .HasForeignKey(e => e.UserId);
 
-            builder.HasData(DataSeeder.GetUserRoles());
+            // builder.HasData(DataSeeder.GetUserRoles());
         }
     }
 }
