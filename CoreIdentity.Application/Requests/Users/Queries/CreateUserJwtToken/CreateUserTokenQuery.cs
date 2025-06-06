@@ -4,4 +4,4 @@ using MediatR;
 
 namespace CoreIdentity.Application.Requests.Users.Queries.CreateUserJwtToken;
 
-public record CreateUserJwtTokenQuery(User User, string TenantId, string RefreshToken) : IRequest<UserTokenDto>;
+public record CreateUserJwtTokenQuery(User User, string TenantId, string RefreshToken, Guid LogId) : IRequest<UserTokenDto>;

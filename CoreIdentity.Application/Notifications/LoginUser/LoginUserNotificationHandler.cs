@@ -1,7 +1,9 @@
+using CoreIdentity.Application.Common.Extensions;
 using CoreIdentity.Application.Common.Interfaces;
 using CoreIdentity.Domain.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using static CoreIdentity.Application.Common.Extensions.CryptographyExtensions;
 
 namespace CoreIdentity.Application.Notifications.LoginUser;
 
@@ -21,13 +23,23 @@ public class LoginUserNotificationHandler(ICoreIdentityDbContext dbContext) : IN
             _dbContext.Users.Update(user);
         }
 
+        var token = CreatePassword(notification.LogId.ToString());
+
         var userLog = new UserLog
         {
             UserId = notification.UserId,
+            LogId = notification.LogId,
             IpAddress = notification.IpAddress,
             TenantId = tenantId,
             RefreshToken = notification.RefreshToken,
-            ExpiryTime = notification.RefreshTokenExpiry
+            ExpiryTime = notification.RefreshTokenExpiry,
+            UserAccessTokens =
+                new UserAccessToken
+                {
+                    UserId = notification.UserId,
+                    AccessToken = token.Password,
+                    AccessTokenKey = token.Salt
+                }
         };
 
         _dbContext.UserLogs.Add(userLog);

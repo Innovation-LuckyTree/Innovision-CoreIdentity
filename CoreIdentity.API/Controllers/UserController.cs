@@ -2,6 +2,7 @@ using CoreIdentity.Application.Requests.Users.Commands;
 using CoreIdentity.Application.Requests.Users.Commands.AddUserRole;
 using CoreIdentity.Application.Requests.Users.Commands.ResetUserPassword;
 using CoreIdentity.Application.Requests.Users.Commands.UnlockUserAccount;
+using CoreIdentity.Application.Requests.Users.Commands.VerifyUserAccessToken;
 using CoreIdentity.Application.Requests.Users.Queries.GetLockedUserByUserId;
 using CoreIdentity.Application.Requests.Users.Queries.GetLockedUsers;
 using CoreIdentity.Application.Requests.Users.Queries.Getusers;
@@ -29,13 +30,24 @@ public class UsersController : ApiBaseController
     }
 
     /// <summary>
+    /// Get users
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("{userId}/access-token")]
+    public async Task<IActionResult> GetUserAccessToken(Guid userId, [FromQuery] Guid logId, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(new GetUsersQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Create User
     /// </summary>
     /// <param name="request"></param>  
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut]
-    public async Task<IActionResult> Put([FromBody]CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Put([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -49,7 +61,7 @@ public class UsersController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody]UpdateUserInfoCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post([FromBody] UpdateUserInfoCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -63,7 +75,7 @@ public class UsersController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("role")]
-    public async Task<IActionResult> AddUserRole([FromBody]AddUserRoleCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddUserRole([FromBody] AddUserRoleCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -77,7 +89,7 @@ public class UsersController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("password/reset")]
-    public async Task<IActionResult> ResetUserPassword([FromBody]ResetUserPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ResetUserPassword([FromBody] ResetUserPasswordCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -91,7 +103,7 @@ public class UsersController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("password")]
-    public async Task<IActionResult> UpdatePassword([FromBody]UpdateUserPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdatePassword([FromBody] UpdateUserPasswordCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -105,7 +117,7 @@ public class UsersController : ApiBaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("password/update")]
-    public async Task<IActionResult> UpdateUserPassword([FromBody]UpdateUserPasswordByIdCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUserPassword([FromBody] UpdateUserPasswordByIdCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 
@@ -148,6 +160,20 @@ public class UsersController : ApiBaseController
     /// <returns></returns>
     [HttpPost("unlock")]
     public async Task<IActionResult> UnlockUser([FromBody] UnlockUserAccountCommand request, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+    
+    /// <summary>
+    /// Verify User Access
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("user-access-token/verify")]
+    public async Task<IActionResult> VerifyUserAccessToken([FromBody] VerifyUserAccessTokenCommand request, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);
 

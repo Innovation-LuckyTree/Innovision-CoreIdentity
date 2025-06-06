@@ -65,9 +65,10 @@ public class GetRefreshTokenQueryHandler : IRequestHandler<GetRefreshTokenQuery,
 
         var refreshToken = CryptographyExtensions.CreateKey();
         var refreshTokenExpiration = _expiryDateTime.AddMinutes(30).ToUniversalTime();
+        var logId = Guid.NewGuid();
 
-        await _mediator.Publish(new LoginUserNotification(user.Id, refreshToken, refreshTokenExpiration, userLog.TenantId.ToString(), userLog.IpAddress), cancellationToken);
+        await _mediator.Publish(new LoginUserNotification(user.Id, logId, refreshToken, refreshTokenExpiration, userLog.TenantId.ToString(), userLog.IpAddress), cancellationToken);
 
-        return await _mediator.Send(new CreateUserJwtTokenQuery(user, userLog.TenantId.ToString(), refreshToken), cancellationToken);
+        return await _mediator.Send(new CreateUserJwtTokenQuery(user, userLog.TenantId.ToString(), refreshToken, logId), cancellationToken);
     }
 }

@@ -61,10 +61,11 @@ public class GetUserTokenQueryHandler : IRequestHandler<GetUserTokenQuery, UserT
 
         var refreshToken = CryptographyExtensions.CreateKey();
         var refreshTokenExpiration = _expiryDateTime.AddMinutes(30).ToUniversalTime();
+        var logId = Guid.NewGuid();
 
-        await _mediator.Publish(new LoginUserNotification(user.Id, refreshToken, refreshTokenExpiration, request.TenantId, request.IpAddress), cancellationToken);
+        await _mediator.Publish(new LoginUserNotification(user.Id, logId, refreshToken, refreshTokenExpiration, request.TenantId, request.IpAddress), cancellationToken);
 
-        return await _mediator.Send(new CreateUserJwtTokenQuery(user, request.TenantId, refreshToken), cancellationToken);
+        return await _mediator.Send(new CreateUserJwtTokenQuery(user, request.TenantId, refreshToken, logId), cancellationToken);
     }
 
     private async Task<bool> ValidateUser(GetUserTokenQuery request, User user)

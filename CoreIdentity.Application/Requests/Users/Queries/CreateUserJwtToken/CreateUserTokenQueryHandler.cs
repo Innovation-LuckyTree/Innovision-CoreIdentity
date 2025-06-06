@@ -25,7 +25,7 @@ public class CreateUserJwtTokenQueryHandler : IRequestHandler<CreateUserJwtToken
 
     public async Task<UserTokenDto> Handle(CreateUserJwtTokenQuery request, CancellationToken cancellationToken)
     {
-        var token = await GenerateToken(request.User, request.TenantId, cancellationToken);
+        var token = await GenerateToken(request.User, request.TenantId, request.LogId, cancellationToken);
 
         return new UserTokenDto
         {
@@ -41,7 +41,7 @@ public class CreateUserJwtTokenQueryHandler : IRequestHandler<CreateUserJwtToken
             RefreshToken = request.RefreshToken
         };
     }
-    private async Task<string> GenerateToken(User user, string tenantId, CancellationToken cancellationToken)
+    private async Task<string> GenerateToken(User user, string tenantId, Guid logId, CancellationToken cancellationToken)
     {
         var key = _appConfig.JwtConfig.Key;
         var issuer = _appConfig.JwtConfig.Issuer;
@@ -61,6 +61,7 @@ public class CreateUserJwtTokenQueryHandler : IRequestHandler<CreateUserJwtToken
         claims.Add(new Claim("token_type", "access"));
         claims.Add(new Claim("companyId", user.CompanyId?.ToString() ?? ""));
         claims.Add(new Claim("user_id", user.Id.ToString()));
+        claims.Add(new Claim("log_id", logId.ToString()));
         claims.Add(new Claim("jti", Guid.NewGuid().ToString()));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
