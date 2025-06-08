@@ -1,5 +1,6 @@
 using CoreIdentity.Application.Requests.Users.Commands;
 using CoreIdentity.Application.Requests.Users.Commands.AddUserRole;
+using CoreIdentity.Application.Requests.Users.Commands.GetUserAccessToken;
 using CoreIdentity.Application.Requests.Users.Commands.ResetUserPassword;
 using CoreIdentity.Application.Requests.Users.Commands.UnlockUserAccount;
 using CoreIdentity.Application.Requests.Users.Commands.VerifyUserAccessToken;
@@ -36,7 +37,7 @@ public class UsersController : ApiBaseController
     [HttpGet("{userId}/access-token")]
     public async Task<IActionResult> GetUserAccessToken(Guid userId, [FromQuery] Guid logId, CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(new GetUsersQuery(), cancellationToken);
+        var result = await Mediator.Send(new GetUserAccessTokenQuery(userId, logId), cancellationToken);
         return Ok(result);
     }
 
