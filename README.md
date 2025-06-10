@@ -1,6 +1,6 @@
 
 UAT
-docker build -t registry.gitlab.com/happyplay/happy-play/uat-happy-play-identity:v1.0.3 .
+docker build -t registry.gitlab.com/happyplay/happy-play/uat-happy-play-identity:v1.0.4 .
 
 
 PROD

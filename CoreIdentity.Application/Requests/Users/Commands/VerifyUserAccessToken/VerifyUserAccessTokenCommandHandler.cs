@@ -23,6 +23,9 @@ public class VerifyUserAccessTokenCommandHandler(ICoreIdentityDbContext context,
         if (DateTime.UtcNow > userLog.ExpiryTime)
             throw new Exception("Refresh Token is already expire!");
 
+        if (userLog.UserAccessTokens.AccessToken != request.AccessToken)
+            throw new Exception("Failed to validate user access token!");
+
         var user = await _context.Users.Where(o => o.Id == userLog.UserId)
             .Include(o => o.TenantUsers)
             .Include(o => o.UserRoles)
