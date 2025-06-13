@@ -3,8 +3,8 @@ using System;
 using CoreIdentity.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,26 +18,26 @@ namespace CoreIdentity.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1-servicing")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Claims", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -48,20 +48,20 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -72,46 +72,45 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("AdminUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("AppKey")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DefaultPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Domain")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Issuer")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("TenantName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdminUserId")
-                        .IsUnique()
-                        .HasFilter("[AdminUserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Tenant", (string)null);
                 });
@@ -119,16 +118,16 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.TenantAudience", b =>
                 {
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AudienceId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("TenantId", "AudienceId");
 
@@ -141,32 +140,32 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("TenantKeyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("character varying(150)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("TenantKeyId");
 
@@ -178,10 +177,10 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.TenantUser", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "TenantId");
 
@@ -194,63 +193,63 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Attempts")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("ChangePassword")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("IdNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNumber"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdNumber"));
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LockTime")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LockTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Locked")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("MobileNumber")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<bool>("MobilePrimary")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("PasswordSalt")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -263,27 +262,27 @@ namespace CoreIdentity.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserAccessTokenId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserAccessTokenId"));
 
                     b.Property<string>("AccessToken")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("AccessTokenKey")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Used")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<long>("UserLogId")
                         .HasColumnType("bigint");
@@ -291,6 +290,9 @@ namespace CoreIdentity.Persistence.Migrations
                     b.HasKey("UserAccessTokenId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserLogId")
+                        .IsUnique();
 
                     b.ToTable("UserAccessToken", (string)null);
                 });
@@ -301,14 +303,14 @@ namespace CoreIdentity.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserAccessTokenLogId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserAccessTokenLogId"));
 
                     b.Property<string>("GameName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("LogDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("LogDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserAccessTokenId")
                         .HasColumnType("bigint");
@@ -323,10 +325,10 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserClaims", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ClaimId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "ClaimId");
 
@@ -339,40 +341,40 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("UserDeviceTokenId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DeviceModel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DeviceName")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserDeviceTokenId");
 
@@ -385,29 +387,29 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<int>("UserKeyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserKeyId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserKeyId"));
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserKeyId");
 
@@ -422,30 +424,30 @@ namespace CoreIdentity.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserLogId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserLogId"));
 
-                    b.Property<DateTime>("ExpiryTime")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpiryTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("IpAddress")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<Guid>("LogId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LoginDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserLogId");
 
@@ -459,10 +461,10 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserRoles", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -529,7 +531,15 @@ namespace CoreIdentity.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CoreIdentity.Domain.Entity.UserLog", "UserLog")
+                        .WithOne("UserAccessTokens")
+                        .HasForeignKey("CoreIdentity.Domain.Entity.UserAccessToken", "UserLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("User");
+
+                    b.Navigation("UserLog");
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessTokenLog", b =>
@@ -596,17 +606,9 @@ namespace CoreIdentity.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreIdentity.Domain.Entity.UserAccessToken", "UserAccessTokens")
-                        .WithOne("UserLog")
-                        .HasForeignKey("CoreIdentity.Domain.Entity.UserLog", "UserLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Tenant");
 
                     b.Navigation("User");
-
-                    b.Navigation("UserAccessTokens");
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserRoles", b =>
@@ -672,8 +674,11 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessToken", b =>
                 {
                     b.Navigation("UserAccessTokenLogs");
+                });
 
-                    b.Navigation("UserLog")
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserLog", b =>
+                {
+                    b.Navigation("UserAccessTokens")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

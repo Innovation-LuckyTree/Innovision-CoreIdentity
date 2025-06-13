@@ -3,17 +3,17 @@ using System;
 using CoreIdentity.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace CoreIdentity.Persistence.Migrations
 {
     [DbContext(typeof(CoreIdentityDbContext))]
-    [Migration("20240324152050_AdjustStringLength")]
-    partial class AdjustStringLength
+    [Migration("20250613054816_CreatePostgresDb")]
+    partial class CreatePostgresDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,26 +21,26 @@ namespace CoreIdentity.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1-servicing")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Claims", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -51,71 +51,69 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
-
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("AdminUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("AppKey")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DefaultPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Domain")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Issuer")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("TenantName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdminUserId")
-                        .IsUnique()
-                        .HasFilter("[AdminUserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Tenant", (string)null);
                 });
@@ -123,16 +121,16 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.TenantAudience", b =>
                 {
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AudienceId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("TenantId", "AudienceId");
 
@@ -147,30 +145,30 @@ namespace CoreIdentity.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("character varying(150)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("TenantKeyId");
 
@@ -182,10 +180,10 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.TenantUser", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "TenantId");
 
@@ -198,158 +196,142 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Attempts")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("ChangePassword")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("IdNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNumber"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdNumber"));
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LockTime")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LockTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Locked")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("MobileNumber")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<bool>("MobilePrimary")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("PasswordSalt")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+                });
 
-                    // b.HasData(
-                    //     new
-                    //     {
-                    //         Id = new Guid("cba2ada5-6aac-4cb8-9575-83609f28dec3"),
-                    //         Attempts = 0,
-                    //         ChangePassword = false,
-                    //         CreatedOn = new DateTime(2024, 3, 24, 23, 20, 49, 845, DateTimeKind.Local).AddTicks(8977),
-                    //         Email = "juanTmadAdmin@gmail.com",
-                    //         EmailConfirmed = true,
-                    //         IdNumber = 0,
-                    //         Locked = false,
-                    //         MobileNumber = "09090909099",
-                    //         MobilePrimary = true,
-                    //         Password = "Q5jRr6ZfVu0VRDnThfUo2NKSp3fd3kefYO72LcSn78+YXV+GC1Q0NXoMiSbQYC2iyf0eQpX0HfBS2gSUJUoFTw==",
-                    //         PasswordSalt = "C82toLJZT+ehVGz01R9sHXvnGLcgPE9xCzq3ZqAOBPc=",
-                    //         UserName = "juanTmadAdmin"
-                    //     },
-                    //     new
-                    //     {
-                    //         Id = new Guid("fd0473d0-782a-4759-8eba-87e55bbf8746"),
-                    //         Attempts = 0,
-                    //         ChangePassword = false,
-                    //         CreatedOn = new DateTime(2024, 3, 24, 23, 20, 49, 897, DateTimeKind.Local).AddTicks(6037),
-                    //         Email = "juanTmadOperator@gmail.com",
-                    //         EmailConfirmed = true,
-                    //         IdNumber = 0,
-                    //         Locked = false,
-                    //         MobileNumber = "09090909099",
-                    //         MobilePrimary = true,
-                    //         Password = "dUy8YKDVqdJSsEVOrgEB09AcPTcbmDIOvLTbyKgtrE9aJa8ZIupsDJiDYdl4pbaOLlOROM0UyxIvDKGW1BNIiw==",
-                    //         PasswordSalt = "Vq2Jm0vyQ2YrQn3IP8iCKq6OT2cNpZj/7SOq0ixiOmE=",
-                    //         UserName = "juanTmadOperator"
-                    //     },
-                    //     new
-                    //     {
-                    //         Id = new Guid("09df74ba-ee71-4e5f-90a4-7c1e51297716"),
-                    //         Attempts = 0,
-                    //         ChangePassword = false,
-                    //         CreatedOn = new DateTime(2024, 3, 24, 23, 20, 49, 950, DateTimeKind.Local).AddTicks(3900),
-                    //         Email = "juanTmadMasterAgent@gmail.com",
-                    //         EmailConfirmed = true,
-                    //         IdNumber = 0,
-                    //         Locked = false,
-                    //         MobileNumber = "09090909099",
-                    //         MobilePrimary = true,
-                    //         Password = "mWaVCfJnQQMX1EESeMftcjKuob/puxmg6fxhvtFlGuW5U3EJYiFTaf9+LDfmj/mrA9GDf78tKkOvayaOYgEosQ==",
-                    //         PasswordSalt = "hm0mt1KSHEpzYv7KEhj24ufgQqOgohJjYgR4xuBa564=",
-                    //         UserName = "juanTmadMasterAgent"
-                    //     },
-                    //     new
-                    //     {
-                    //         Id = new Guid("c96c7370-43fe-4626-b327-cc4f7dd3c995"),
-                    //         Attempts = 0,
-                    //         ChangePassword = false,
-                    //         CreatedOn = new DateTime(2024, 3, 24, 23, 20, 50, 14, DateTimeKind.Local).AddTicks(2087),
-                    //         Email = "juanTmadAgent@gmail.com",
-                    //         EmailConfirmed = true,
-                    //         IdNumber = 0,
-                    //         Locked = false,
-                    //         MobileNumber = "09090909099",
-                    //         MobilePrimary = true,
-                    //         Password = "hqnNe9XRhyMQ9DezLHkqjbPnJpvBaCOfJdiAJhYxyXNjLYQAZBnSl2stA9QZKd9BiRMOQrWL3IIcLRdYGacFFQ==",
-                    //         PasswordSalt = "MCm34P6r1FHan5Skf6FVo1JHcTkHH0WZOthU1SlqKn8=",
-                    //         UserName = "juanTmadAgent"
-                    //     },
-                    //     new
-                    //     {
-                    //         Id = new Guid("68b4b3dd-0786-42d3-a6f4-20bab79b1869"),
-                    //         Attempts = 0,
-                    //         ChangePassword = false,
-                    //         CreatedOn = new DateTime(2024, 3, 24, 23, 20, 50, 78, DateTimeKind.Local).AddTicks(9767),
-                    //         Email = "juanTmadPlayer@gmail.com",
-                    //         EmailConfirmed = true,
-                    //         IdNumber = 0,
-                    //         Locked = false,
-                    //         MobileNumber = "09090909099",
-                    //         MobilePrimary = true,
-                    //         Password = "UOGLz0HEkAluMRLtj283TT1XfL17WnwvfqbZ1biWrvrTOJhp97jJ/Vk7SYRcr2ED5UA3WlWwFBH/IJr+svXKjQ==",
-                    //         PasswordSalt = "ZsBlveWv/bVIG+Lqc5hwjkU5qys6+Du1nROgYmUVAws=",
-                    //         UserName = "juanTmadPlayer"
-                    //     });
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessToken", b =>
+                {
+                    b.Property<long>("UserAccessTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserAccessTokenId"));
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccessTokenKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("UserLogId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserAccessTokenId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserLogId")
+                        .IsUnique();
+
+                    b.ToTable("UserAccessToken", (string)null);
+                });
+
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessTokenLog", b =>
+                {
+                    b.Property<long>("UserAccessTokenLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserAccessTokenLogId"));
+
+                    b.Property<string>("GameName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("LogDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UserAccessTokenId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserAccessTokenLogId");
+
+                    b.HasIndex("UserAccessTokenId");
+
+                    b.ToTable("UserAccessTokenLog", (string)null);
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserClaims", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ClaimId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "ClaimId");
 
@@ -362,40 +344,40 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<Guid>("UserDeviceTokenId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DeviceModel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DeviceName")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserDeviceTokenId");
 
@@ -408,29 +390,29 @@ namespace CoreIdentity.Persistence.Migrations
                 {
                     b.Property<int>("UserKeyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserKeyId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserKeyId"));
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<DateTime?>("LastModifiedBy")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("LastModifiedBy")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserKeyId");
 
@@ -441,24 +423,34 @@ namespace CoreIdentity.Persistence.Migrations
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserLog", b =>
                 {
-                    b.Property<int>("UserLogId")
+                    b.Property<long>("UserLogId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserLogId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("UserLogId"));
+
+                    b.Property<DateTimeOffset>("ExpiryTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("IpAddress")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid>("LogId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LoginDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("TenantId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserLogId");
 
@@ -472,43 +464,16 @@ namespace CoreIdentity.Persistence.Migrations
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserRoles", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles", (string)null);
-
-                    // b.HasData(
-                    //     new
-                    //     {
-                    //         UserId = new Guid("cba2ada5-6aac-4cb8-9575-83609f28dec3"),
-                    //         RoleId = 1
-                    //     },
-                    //     new
-                    //     {
-                    //         UserId = new Guid("fd0473d0-782a-4759-8eba-87e55bbf8746"),
-                    //         RoleId = 2
-                    //     },
-                    //     new
-                    //     {
-                    //         UserId = new Guid("09df74ba-ee71-4e5f-90a4-7c1e51297716"),
-                    //         RoleId = 3
-                    //     },
-                    //     new
-                    //     {
-                    //         UserId = new Guid("00000000-0000-0000-0000-000000000000"),
-                    //         RoleId = 4
-                    //     },
-                    //     new
-                    //     {
-                    //         UserId = new Guid("68b4b3dd-0786-42d3-a6f4-20bab79b1869"),
-                    //         RoleId = 5
-                    //     });
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.Tenant", b =>
@@ -559,6 +524,36 @@ namespace CoreIdentity.Persistence.Migrations
                     b.Navigation("Tenant");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessToken", b =>
+                {
+                    b.HasOne("CoreIdentity.Domain.Entity.User", "User")
+                        .WithMany("UserAccessTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoreIdentity.Domain.Entity.UserLog", "UserLog")
+                        .WithOne("UserAccessTokens")
+                        .HasForeignKey("CoreIdentity.Domain.Entity.UserAccessToken", "UserLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserLog");
+                });
+
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessTokenLog", b =>
+                {
+                    b.HasOne("CoreIdentity.Domain.Entity.UserAccessToken", "UserAccessToken")
+                        .WithMany("UserAccessTokenLogs")
+                        .HasForeignKey("UserAccessTokenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAccessToken");
                 });
 
             modelBuilder.Entity("CoreIdentity.Domain.Entity.UserClaims", b =>
@@ -666,6 +661,8 @@ namespace CoreIdentity.Persistence.Migrations
 
                     b.Navigation("TenantUsers");
 
+                    b.Navigation("UserAccessTokens");
+
                     b.Navigation("UserClaims");
 
                     b.Navigation("UserDeviceTokens");
@@ -675,6 +672,17 @@ namespace CoreIdentity.Persistence.Migrations
                     b.Navigation("UserLogs");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserAccessToken", b =>
+                {
+                    b.Navigation("UserAccessTokenLogs");
+                });
+
+            modelBuilder.Entity("CoreIdentity.Domain.Entity.UserLog", b =>
+                {
+                    b.Navigation("UserAccessTokens")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

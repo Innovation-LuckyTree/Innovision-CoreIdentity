@@ -7,9 +7,9 @@ public class UserLog
     public Guid UserId { get; set; }
     public Guid? TenantId { get; set; }
     public string IpAddress { get; set; }
-    public DateTimeOffset LoginDate { get; set; } = DateTime.Now;
+    public DateTimeOffset LoginDate { get; set; } = DateTime.UtcNow;
     public string RefreshToken { get; set; }
-    public DateTime ExpiryTime { get; set; }
+    public DateTimeOffset ExpiryTime { get; set; }
 
     public virtual User User { get; set; }
     public virtual Tenant Tenant { get; set; }
