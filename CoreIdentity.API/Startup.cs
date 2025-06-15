@@ -103,6 +103,14 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        // Run Seeder
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<CoreIdentityDbContext>();
+            DataSeeder.SeedAsync(context).GetAwaiter().GetResult(); // Use GetAwaiter if Configure is not async
+        }
+
         // Shows UseCors with CorsPolicyBuilder.
         app.UseCors(builder =>
         {
